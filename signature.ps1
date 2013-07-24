@@ -1,7 +1,7 @@
 #set this to the location of the gam binaries
 Set-Alias gam C:\gam\gam.exe
 
-#Imports data from a csv that has coloumns listed as below. 
+#Imports data from a csv that has coloumns listed as below. Manditory coloums for this script to work are email first last
 $salesou = Import-Csv C:\scripts\sales.csv
 foreach($column in $salesou)
   {
