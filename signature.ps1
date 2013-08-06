@@ -80,7 +80,7 @@ $html = @"
 $field2 $field3<br>
 $field4<br>
 c: $field5 $field6<br>
-<img src="https://lh6.googleusercontent.com/uiHmtV8HkmcInU_D3RNeuj1P6X72RP0BtkPLdxNSVcysCYSQxRfIAxcQ5Yu1DJbGPfgZlF1mcfHkqxi66IX-KDDB30ZCflsII4u78hl4bqVJ305-cps" height="32px;" width="105px;"><br>
+<img src="insert image here" height="32px;" width="105px;"><br>
 See what&#39;s happening right now on your Patch!<br>
 $link1 $link2 $link3 $link4 $link5 $link6 $link7<br>
 "@
