@@ -14,7 +14,7 @@ Start-Transcript -path C:\scripts\password_output.txt -append
 
 foreach($column in $users)
 {
- clv pass
+ $pass = $null
  #creates random 8 charecter password
  $r = New-Object System.Random
  1..8 | % { $pass += [char]$r.next(33,126) }
@@ -22,7 +22,7 @@ foreach($column in $users)
  gam update user $($column.email) password $pass
 
  Write-Host "$($column.email) password changed $pass" 
- clv pass
+ 
  }
 
 Stop-Transcript
