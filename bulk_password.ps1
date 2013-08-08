@@ -20,10 +20,10 @@ foreach($column in $users)
  1..8 | % { $pass += [char]$r.next(33,126) }
  
  gam update user $($column.email) password $pass
+ gam update user $($column.email) suspended on
 
- Write-Host "$($column.email) password changed $pass" 
+ Write-Host "$($column.email) password changed - $pass - Suspended `r" 
  
  }
 
 Stop-Transcript
-
