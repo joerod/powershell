@@ -11,19 +11,19 @@ foreach($column in $salesou)
   $field4 = $column.title 
   $field5 = $column.mobile
   $field6 = $column.desk 
-  $field7 = $column.patch1 
+  $field7 = $column.link1 
   $field8 = $column.url1
-  $field9 = $column.patch2
+  $field9 = $column.link2
   $field10 = $column.url2
-  $field11 = $column.patch3
+  $field11 = $column.link3
   $field12 = $column.url3
-  $field13 = $column.patch4
+  $field13 = $column.link4
   $field14 = $column.url4 
-  $field15 = $column.patch5
+  $field15 = $column.link5
   $field16 = $column.url5
-  $field17 = $column.patch6
+  $field17 = $column.link6
   $field18 = $column.url6
-  $field19 = $column.patch7
+  $field19 = $column.link7
   $field20 = $column.url7
 
 #prepends | o: string if user has mobile and desk number
@@ -81,7 +81,7 @@ $field2 $field3<br>
 $field4<br>
 c: $field5 $field6<br>
 <img src="insert image here" height="32px;" width="105px;"><br>
-See what&#39;s happening right now on your Patch!<br>
+Company tag line<br>
 $link1 $link2 $link3 $link4 $link5 $link6 $link7<br>
 "@
 
