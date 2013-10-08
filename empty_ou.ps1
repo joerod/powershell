@@ -1,4 +1,4 @@
-#This script finds empty sub OUs in the OU listed in the 4th line
+#This script finds empty sub OUs in the OU listed in the 4th line and removes them
 
 function empty_OU{
 Get-ADOrganizationalUnit -Filter * -SearchBase "OU=Empty,DC=contoso, DC=local" `
