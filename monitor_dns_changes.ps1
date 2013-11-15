@@ -1,7 +1,7 @@
 #Get machines and date added from DNS and exports to CSV for comparison
 
 Function Get-DNSentry{
-Get-WMIObject -Computer crpnycdcrt01 -Namespace "root\MicrosoftDNS" -Class "MicrosoftDNS_AType" `
+Get-WMIObject -Computer DNSServer -Namespace "root\MicrosoftDNS" -Class "MicrosoftDNS_AType" `
 -Filter "ContainerName='contoso.local' and TimeStamp <> 0" `
 |Select-Object OwnerName, IPAddress, @{n="Date";e={([datetime]"1.1.1601").AddHours($_.Timestamp)}} `
 |sort Date `
