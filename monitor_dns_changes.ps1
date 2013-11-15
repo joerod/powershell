@@ -11,8 +11,8 @@ Get-WMIObject -Computer crpnycdcrt01 -Namespace "root\MicrosoftDNS" -Class "Micr
 Get-DNSentry
 
 Function Compare-CSV {
-$baseline = Import-csv -Path C:\temp\baseline.csv -Header "Computername","IPAddress", "Date" #| Sort-Object Property "Computername" 
-$new = Import-csv -Path C:\temp\update2.csv -Header "Computername","IPAddress", "Date"# | Sort-Object Property "Computername"
+$baseline = Import-csv -Path C:\temp\baseline.csv -Header "Computername","IPAddress", "Date" 
+$new = Import-csv -Path C:\temp\update2.csv -Header "Computername","IPAddress", "Date"
 
 Compare-Object $baseline $new -Property "Computername" -PassThru | Where-Object{$_.SideIndicator -eq '=>'} `
 | Select-Object  "Computername", "IPAddress", "Date"
