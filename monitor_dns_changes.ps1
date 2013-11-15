@@ -18,7 +18,7 @@ Compare-Object $baseline $new -Property "Computername" -PassThru | Where-Object{
 | Select-Object  "Computername", "IPAddress", "Date"
 }
 
-#Send email only if there is a differance from the baseline DNS entries
+#Creates email
 Function Send-Email {
    #SMTP server name
      $smtpServer = "smtp.server.com"
