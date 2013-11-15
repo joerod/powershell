@@ -34,7 +34,7 @@ Function Send-Email {
      $msg.ReplyTo = "replyto@address.com"
      $msg.To.Add("to@address.com")
      $msg.subject = "Email Subject"
-     $msg.body = Compare-CSV 
+     $msg.body = Compare-CSV | Format-Table | Out-String
 
      #Sending email 
      $smtp.Send($msg)
