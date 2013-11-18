@@ -1,5 +1,5 @@
 #Get machines and date added from DNS and exports to CSV for comparison
-
+<# Use this if your using windows 2008 or prior
 Function Get-DNSentry{
 Get-WMIObject -Computer DNSServer -Namespace "root\MicrosoftDNS" -Class "MicrosoftDNS_AType" `
 -Filter "ContainerName='contoso.local' and TimeStamp <> 0" `
@@ -7,6 +7,14 @@ Get-WMIObject -Computer DNSServer -Namespace "root\MicrosoftDNS" -Class "Microso
 |sort Date `
 |Export-Csv C:\temp\update.csv -NoTypeInformation 
 }
+#>
+
+#Use this for Windows 2012 DNS server
+Function Get-DNSentry{
+Get-DnsServerResourceRecord -zonename contoso.local |Select-Object Hostname, TimeStamp|sort Hostname `
+| Export-Csv C:\Scripts\update.csv -NoTypeInformation 
+}
+
 
 Get-DNSentry
 
