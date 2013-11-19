@@ -1,13 +1,13 @@
 #This script finds empty sub OUs in the OU listed in the 4th line and removes them
 
-function empty_OU{
+function Get-EmptyOU{
 Get-ADOrganizationalUnit -Filter * -SearchBase "OU=Empty,DC=contoso, DC=local" `
 | Where-Object {-not ( Get-ADObject -Filter * -SearchBase $_.Distinguishedname -SearchScope OneLevel -ResultSetSize 1 )}`
 | Select-Object Distinguishedname
 }
 
 #this removes each empty OU
-foreach($i in empty_OU){
+foreach($i in Get-EmptyOU){
 #removes characters from beginning and end of the empty_ou function 
 $i = $i -replace "@{Distinguishedname=", ""
 $i = $i -replace "}", ""
