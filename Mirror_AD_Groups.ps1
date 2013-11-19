@@ -1,4 +1,4 @@
-#Added a Param to make it easier to run this script user -CopyUser and -ToUser
+#Added a Param to make it easier to run this script use -CopyUser and -ToUser
 Param(
 [String]$CopyUser,
 [String]$ToUser
