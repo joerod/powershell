@@ -5,5 +5,5 @@ $list = Import-Csv C:\temp\removedns.csv
 ForEach($ip in $list){
 
 dnscmd dnsserver /RecordDelete contoso.local $ip.name A $ip.ip /f
-Write-Host "$($ip.name) has been removed from DNS" 
+Write-Output "$($ip.name) has been removed from DNS" 
 }
