@@ -37,8 +37,7 @@ New-Object -TypeName PSCustomObject -Property @{
   }
  }
 
-#$admins = 
-Get-AdminGroups 
+$admins = Get-AdminGroups 
 
 #built-in admin account not named "winroot" will be changed via group policy
  Function Remove-Admin{
