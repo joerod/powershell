@@ -1,4 +1,5 @@
-#Get machines and date added from DNS and exports to CSV for comparison
+#Get machines and date added from DNS and exports to CSV for comparison.
+
 <# Use this if your using windows 2008 or prior
 Function Get-DNSentry{
 Get-WMIObject -Computer DNSServer -Namespace "root\MicrosoftDNS" -Class "MicrosoftDNS_AType" `
