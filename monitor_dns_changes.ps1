@@ -28,24 +28,14 @@ Compare-Object $baseline $new -Property "Computername" -PassThru | Where-Object{
 
 #Creates email
 Function Send-Email {
-   #SMTP server name
-     $smtpServer = "smtp.server.com"
+Send-mailmessage 
+-to "Joe Rodriguez <joerod@company.com>" `
+-From "Joe Rodriguez <joerod@company.com>" `
+-Subject "DNS Changes" `
+-SmtpServer "mailserver.com"`
+-Body (Compare-CSV | Format-Table | Out-String)
 
-     #Creating a Mail object
-     $msg = new-object Net.Mail.MailMessage
-
-     #Creating SMTP server object
-     $smtp = new-object Net.Mail.SmtpClient($smtpServer)
-
-     #Email structure 
-     $msg.From = "email@address.com"
-     $msg.ReplyTo = "replyto@address.com"
-     $msg.To.Add("to@address.com")
-     $msg.subject = "Email Subject"
-     $msg.body = Compare-CSV | Format-Table | Out-String
-
-     #Sending email 
-     $smtp.Send($msg)
+  
 }
 
 #Only sends email if there is a change
