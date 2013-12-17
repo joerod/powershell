@@ -28,7 +28,7 @@ $acl.SetAccessRule($accessRule)
 $acl | Set-Acl $CreatePath
 
 #adds new home directory to AD
-$drive = "\\contoso\dfs\UsersNew\"
+$drive = "\\server_b\f$\UsersNew\"
 Set-ADUser $user -HomeDirectory ("$drive" + "$user") -HomeDrive U 
 
   }
@@ -36,7 +36,7 @@ Set-ADUser $user -HomeDirectory ("$drive" + "$user") -HomeDrive U
   {
 #Copies data (only delta if file already exist)
 Send-mailmessage -to "Joe Rodriguez <joerod@companycom>" -From "Joe Rodriguez <joerod@companycom>" -Subject "Started Copying $User" -SmtpServer "mailserver.company.com"
-robocopy \\server_a\f$\UsersOld\$user \\server_b\f$\UK_Users\$user /e /COPYALL /xo /Z /R:1000000 /W:1 /LOG+:C:\robocopy.log /tee
+robocopy \\server_a\f$\UsersOld\$user \\server_b\f$\UsersNew\$user /e /COPYALL /xo /Z /R:1000000 /W:1 /LOG+:C:\robocopy.log /tee
 #Sets home drive in AD
 $drive = "\\contoso\dfs\UsersNew\"
 Set-ADUser $user -HomeDirectory ("$drive" + "$user") -HomeDrive U 
