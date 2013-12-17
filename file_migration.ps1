@@ -1,7 +1,8 @@
 <# Prerequisite robocopy
                 RSAT
 
-This script will copy files from one server (server_a) to another (server_b) using robocopy and a list of folders.
+This script will copy files from one server (server_a) to another (server_b) using robocopy and a list of folders.  Populate a list of SAMAccount Names into a file named
+userlist.txt.   
 First we check to see if the folder being copied to the destination server (server_b) exists on the host server (server_a), 
 if not  the folder is created and  the ACL are modified, Then the users AD profile is updated with the new home drive and specified drive letter.  
 
