@@ -1,7 +1,7 @@
 #Gets list of machines from specified OU
 Function Get-CompList{
 Get-ADObject -Filter { ObjectClass -eq "computer" } -SearchBase "OU=Resources,DC=NWTraders,DC=LOCAL" `
-| Select-Object -expandproperty Name
+| Select-Object -expandproperty Name |Sort
 }
 
 
@@ -17,8 +17,9 @@ foreach($i in Get-CompList){
         "`r"
         }
  else {
-
+Write-host "Added $i to list...."
 $adsi = [ADSI]"WinNT://$i"
+
 $Object = $adsi.Children | ? {$_.SchemaClassName -eq 'user'} | % {
 $UserName = $_.Name -join '';
 New-Object -TypeName PSCustomObject -Property @{
@@ -29,15 +30,14 @@ New-Object -TypeName PSCustomObject -Property @{
     }  
   } 
 
-      
-
    $Object | Select-object ComputerName,UserName,Groups,Disabled |? {$_.Groups -match "Administrators*"}  
    "`r"
    }
   }
  }
 
-$admins = Get-AdminGroups 
+$admins = Get-AdminGroups -ErrorAction SilentlyContinue
+
 
 #built-in admin account not named "winroot" will be changed via group policy
  Function Remove-Admin{
@@ -45,45 +45,41 @@ $admins = Get-AdminGroups
  
  foreach($admin in $admins){
  #renames a local account named winroot that is not built-in then disables it.  This is done so our GPO will can rename the built-in admin account to winroot.
- if($admin.UserName -eq "winroot" -and $admin.groups -eq "Administrators,Users"){
- $user = [ADSI]"WinNT://$($admin.computername)/$($admin.UserName),user"
+ if($admin.UserName -match "winroot" -and $admin.groups -match "Administrators,Users"){
+ $user = [ADSI]("WinNT://" + $($admin.computername) + "/$($admin.UserName),user")
  $user.psbase.rename("winroot_old")
 
- $user = [ADSI]"WinNT://$($admin.computername)/winroot_old"
+ $user = [ADSI]("WinNT://" + $($admin.computername) + "/winroot_old")
  $user.UserFlags[0] = $User.UserFlags[0] -bor 0x2
  $user.SetInfo()
 
  Write-host $($admin.computername) "has been renamed to winroot_old"
+ }
 
- #disables all local accounts
- if($admin.UserName -ne "winroot"){
- $user = [ADSI]"WinNT://$($admin.computername)/$($admin.UserName)"
+  #sets account password and disables all local accounts 
+
+ if($admin.UserName -notmatch "winroot"){
+ $user = [ADSI]("WinNT://" + $($admin.computername) + "/" + $($admin.UserName))
  $user.UserFlags[0] = $User.UserFlags[0] -bor 0x2
  $user.SetInfo()
- Write-host -NoNewline "\\$($admin.computername) $($admin.UserName) has been disabled"
+ Write-host "\\$($admin.computername)\$($admin.UserName) has been disabled `r"
+   
+
+ }
 
  
  #enables winroot built-in account if its disabled
- if($admin.UserName -eq "winroot" -or "Administrator" -and $admin.groups -eq "Administrators"){
- $user = [ADSI]"WinNT://$($admin.computername)/winroot"
+ if($admin.UserName -match "winroot" -and $admin.groups -match "Administrators"){
+ $user = [ADSI]("WinNT://" + $($admin.computername) + "/winroot")
  $user.UserFlags[0] = $User.UserFlags[0] -bxor 0x2
  $user.SetInfo()
- Write-host "$($admin.computername)\winroot has been enabled"
+ Write-host "\\$($admin.computername)\winroot has been enabled"
 
+}
 
-
- }
-
-    else {
-
- Write-host "$($admin.computername) is OK"
-
- }
-
- 
      }
     }   
-   }
-  }
+   
+  
 
-Remove-Admin
+Remove-Admin -ErrorAction SilentlyContinue
