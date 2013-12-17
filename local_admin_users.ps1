@@ -6,8 +6,8 @@ Get-ADObject -Filter { ObjectClass -eq "computer" } -SearchBase "OU=Resources,DC
 
 
 <#
-Gets a list of local Admin accounts from each computers in OU from Get-Complist function, will ping machine to see if its alive and write error message
-if machine is unavalible
+Gets a list of local Admin accounts from each computers in OU from Get-Complist function, will ping machine 
+to see if its alive and write error message if machine is unavalible
 #>
 Function Get-AdminGroups{
 
@@ -41,10 +41,10 @@ $admins = Get-AdminGroups -ErrorAction SilentlyContinue
 
 #built-in admin account not named "winroot" will be changed via group policy
  Function Remove-Admin{
-
- 
+  
  foreach($admin in $admins){
- #renames a local account named winroot that is not built-in then disables it.  This is done so our GPO will can rename the built-in admin account to winroot.
+ #renames a local account named winroot that is not built-in then disables it.  This is done so our GPO 
+ #will can rename the built-in admin account to winroot.
  if($admin.UserName -match "winroot" -and $admin.groups -match "Administrators,Users"){
  $user = [ADSI]("WinNT://" + $($admin.computername) + "/$($admin.UserName),user")
  $user.psbase.rename("winroot_old")
@@ -56,7 +56,7 @@ $admins = Get-AdminGroups -ErrorAction SilentlyContinue
  Write-host $($admin.computername) "has been renamed to winroot_old"
  }
 
-  #sets account password and disables all local accounts 
+ #sets account password and disables all local accounts 
 
  if($admin.UserName -notmatch "winroot"){
  $user = [ADSI]("WinNT://" + $($admin.computername) + "/" + $($admin.UserName))
