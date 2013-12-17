@@ -63,8 +63,6 @@ $admins = Get-AdminGroups -ErrorAction SilentlyContinue
  $user.UserFlags[0] = $User.UserFlags[0] -bor 0x2
  $user.SetInfo()
  Write-host "\\$($admin.computername)\$($admin.UserName) has been disabled `r"
-   
-
  }
 
  
@@ -74,12 +72,8 @@ $admins = Get-AdminGroups -ErrorAction SilentlyContinue
  $user.UserFlags[0] = $User.UserFlags[0] -bxor 0x2
  $user.SetInfo()
  Write-host "\\$($admin.computername)\winroot has been enabled"
-
-}
-
+ }
      }
     }   
    
-  
-
 Remove-Admin -ErrorAction SilentlyContinue
