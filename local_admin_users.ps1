@@ -26,7 +26,8 @@ New-Object -TypeName PSCustomObject -Property @{
     ComputerName = $i.toupper() -join ''
     UserName = $UserName
     Groups = ($_.Groups()  |Foreach-Object {$_.GetType().InvokeMember("Name",'GetProperty', $null, $_, $null)}) -join ',' 
-    Disabled = (Get-WmiObject -ComputerName $i -Class Win32_UserAccount -Filter "LocalAccount='$true' and name='$UserName'"|Select-Object -expandproperty Disabled) -join ''
+    Disabled = (Get-WmiObject -ComputerName $i -Class Win32_UserAccount -Filter "LocalAccount='$true' and name='$UserName'"`
+    |Select-Object -expandproperty Disabled) -join ''
     }  
   } 
 
