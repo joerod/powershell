@@ -1,5 +1,9 @@
-write-host -foregroundcolor yellow "This will find the ""Optional Features"" running on a remote host"
-$hN = Read-Host 'Enter host name'
- gwmi win32_OptionalFeature -credential -computername $hn `
- | Select-Object -Property caption, installstate | Where-Object {$_.installstate -eq 1} | sort-object caption
+
+Param(
+[Parameter(Position=0,mandatory=$true)]
+[string]$Hostname
+)
+
+ gwmi win32_OptionalFeature -computername $Hostname `
+ | Where-Object {$_.installstate -eq 1} | Select-Object Caption |sort-object caption
  
