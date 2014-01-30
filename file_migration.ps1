@@ -9,10 +9,7 @@ if not  the folder is created and  the ACL are modified, Then the users AD profi
 If the folder already exists on server_a robocopy copies all the contents including file perms and sends a log everything
 #>
 
-
-$users = Get-Content C:\Users\admin\Desktop\userlist.txt
-
-foreach($user in $users){
+foreach($user in (Get-Content C:\Users\admin\Desktop\userlist.txt)){
 
 #checks if user has a home directory if not it creates one on target server
 if((Test-Path -Path "\\server_a\d$\user\$user") -eq $false) {
