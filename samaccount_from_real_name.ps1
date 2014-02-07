@@ -1,5 +1,6 @@
 #find users samaccount name from real name
 #-all switch shows every user in AD even if the account is not enabled.  
+import-module ActiveDirectory
 
 param
     (
