@@ -3,7 +3,7 @@
 
 param
     (
-        # Param1 help description
+      
         [Parameter(Mandatory=$true)] [string]$Name,
         [switch]$All
      )
