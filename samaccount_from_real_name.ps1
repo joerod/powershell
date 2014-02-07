@@ -13,7 +13,7 @@ Get-ADUser -Filter "Name -like '$Name*'" -Properties * | Select-Object Name, Sam
 }
 
 else {
-Get-ADUser -Properties * -Filter "Name -like '$Name*'" | Where {$_.Enabled -contains "True"}  | Select-Object Name, SamAccountName, Mail
+Get-ADUser -Properties * -Filter "Name -like '$Name*'" | ? {$_.Enabled -contains "True"}  | Select-Object Name, SamAccountName, Mail
 
 }
 
