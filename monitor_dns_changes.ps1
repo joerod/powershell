@@ -12,8 +12,8 @@ Get-WMIObject -Computer DNSServer -Namespace "root\MicrosoftDNS" -Class "Microso
 
 #Use this for Windows 2012 DNS server
 Function Get-DNSentry{
-Get-DnsServerResourceRecord -zonename contoso.local |Select-Object Hostname, TimeStamp|sort Hostname `
-| Export-Csv C:\Scripts\update.csv -NoTypeInformation 
+Get-DnsServerResourceRecord -zonename contoso.local |Select-Object Hostname, TimeStamp|sort Hostname | 
+ Export-Csv C:\Scripts\update.csv -NoTypeInformation 
 }
 
 
@@ -23,8 +23,8 @@ Function Compare-CSV {
 $baseline = Import-csv -Path C:\temp\baseline.csv -Header "Computername","IPAddress", "Date" 
 $new = Import-csv -Path C:\temp\update2.csv -Header "Computername","IPAddress", "Date"
 
-Compare-Object $baseline $new -Property "Computername" -PassThru | Where-Object{$_.SideIndicator -eq '=>'} `
-| Select-Object  "Computername", "IPAddress", "Date"
+Compare-Object $baseline $new -Property "Computername" -PassThru | Where-Object{$_.SideIndicator -eq '=>'} |
+  Select-Object  "Computername", "IPAddress", "Date"
 }
 
 #Creates email
