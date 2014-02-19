@@ -9,7 +9,7 @@
 foreach($i in empty_groups){
 
 #shows progress of script
-Write-Host $i
+Write-Output $i
 
 #removes accidental deletion of object
 Set-ADObject $i -ProtectedFromAccidentalDeletion $false
