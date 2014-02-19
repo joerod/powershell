@@ -19,7 +19,7 @@ Get-MailboxDatabaseCopyStatus -Server $server |Select-Object DatabaseName, Mailb
   }
   $status = Get-DBstatus
 
-  if($status -ne $null){
+  if($status -ne 0){
   Send-MailMessage -To  joerod@contoso.com `
 -from exchangedbalerts@contoso.com -Body ($status|Out-String) -subject "Error on Exchange DB" -smtpserver stmpmailbox -priority High
   }
