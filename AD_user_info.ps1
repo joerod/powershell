@@ -3,10 +3,8 @@
 
 $searchBase = 'ou=users,ou=resources,dc=contoso,dc=local'
  
-$users = Get-ADUser -filter {mail -like '*@contoso.com'} -SearchBase $searchBase 
-
-Foreach ($user in $users){ 
-Get-ADUser -Identity $user -Properties Displayname, Mail, StreetAddress, OfficePhone, MobilePhone `
-|select Displayname, Mail, StreetAddress, OfficePhone, MobilePhone |
+Foreach ($user in (Get-ADUser -filter {mail -like '*@contoso.com'} -SearchBase $searchBase)){ 
+Get-ADUser -Identity $user -Properties Displayname, Mail, StreetAddress, OfficePhone, MobilePhone |
+ select Displayname, Mail, StreetAddress, OfficePhone, MobilePhone |
  Export-Csv -Path C:\Users\admin\Desktop\contoso_users.csv -Append
 }
