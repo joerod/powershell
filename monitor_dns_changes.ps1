@@ -29,13 +29,8 @@ Compare-Object $baseline $new -Property "Computername" -PassThru | Where-Object{
 
 #Creates email
 Function Send-Email {
-Send-mailmessage 
--to "Joe Rodriguez <joerod@company.com>" `
--From "Joe Rodriguez <joerod@company.com>" `
--Subject "DNS Changes" `
--SmtpServer "mailserver.com"`
--Body (Compare-CSV | Format-Table | Out-String)
-
+Send-MailMessage -To  joerod@contoso.com `
+-from DNSAlerts@contoso.com -Body ($status| Format-Table| Out-String) -subject "DNS Change" -smtpserver stmpmailbox -priority High
   
 }
 
