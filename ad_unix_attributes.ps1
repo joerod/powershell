@@ -49,7 +49,6 @@ if($check -ne $null){
 
 else {
     Set-ADUser -Identity $Username -replace @{msSFU30NisDomain = 'contoso'}
-    Set-ADUser -Identity $Username -replace @{unixHomeDirectory = "/home/$username"}
     Set-ADUser -Identity $Username -replace @{loginshell = '/bin/bash'}
     Set-ADUser -Identity $Username -replace @{gidnumber = "$nextid"}
     Set-ADUser -Identity $Username -replace @{uidnumber = "$nextid"}
