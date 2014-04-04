@@ -2,10 +2,10 @@
 
 Param(
 [Parameter(Position=0,mandatory=$true)]
-[string]$Machines
+[array]$Machines
 )
 
-foreach($machine in (Get-Content $machines)){
+foreach($machine in $machines){
 
 Get-WmiObject Win32_OperatingSystem -computer $machine  | select caption | %{
 
