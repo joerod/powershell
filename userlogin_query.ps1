@@ -4,8 +4,7 @@ Param(
 [switch]$Last
 )
 
-$csv = Import-Csv \\share\Logon.log
-$array = $csv | ? {$_.username -eq $Username} | % {
+$array = Import-Csv \\share\Logon.log | ? {$_.username -eq $Username} | % {
 
 New-Object -TypeName PSCustomObject -Property @{
     ComputerName = $_.computername 
