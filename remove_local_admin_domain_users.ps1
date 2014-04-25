@@ -53,7 +53,7 @@ Function Remove-Admin{
     }
 
     Try{
-    # add users who is in admin group to remote admin group
+    # add users who are in admin group to remote admin group
     $scriptblock2 = $ExecutionContext.InvokeCommand.NewScriptBlock("NET LOCALGROUP 'Remote Desktop Users' $($admin.users[$i]) /add")
     Invoke-Command -ComputerName $($admin.computername) -ScriptBlock $scriptblock2 -ErrorVariable remotedesktop
     Write-Output "Add $($admin.users[$i]) to Remote Desktop Users group on $($admin.computername)`r" |Out-File C:\Script_logs\remove_local_admin.log -Append
