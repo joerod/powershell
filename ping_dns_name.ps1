@@ -1,29 +1,26 @@
 # this script will find any pingable machine in a specified range and then list the DNS name of that IP
-
+$ErrorActionPreference = "Stop"
 $ping = New-Object System.Net.NetworkInformation.Ping 
 $i = 0 
 1..255 | foreach { $ip = "192.168.1.$_"  
 $Res = $ping.send($ip) 
  
 if ($Res.Status -eq "Success") 
-{ 
+ { 
  
-$result = $ip + " = Success" 
+ $result = $ip + " = Success" 
 
-Write-Host $result 
-$ErrorActionPreference = "Stop"
-try{
-nslookup $ip | findstr Name:
-
-}
-catch [System.Management.Automation.RemoteException]{
-Write-Warning "$ip - Can't find DNS record"
-}
- 
-$i++ 
- 
-} 
- 
+   Write-Host $result 
+   
+    try{
+        nslookup $ip | findstr Name:
+        }
+        
+ catch {
+         Write-Warning "$ip - Can't find DNS record"
+        }
+   $i++ 
+ } 
  
 }  
 $Hosts = [string]$i + " Hosts is pingable" 
