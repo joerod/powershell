@@ -67,7 +67,7 @@ Function Remove-Admin{
    
     #Removes user from Administrators Group
     $scriptblock = $ExecutionContext.InvokeCommand.NewScriptBlock("NET LOCALGROUP administrators $($admin.users[$i]) /delete")
-    Invoke-Command -ComputerName $($admin.computername) -ScriptBlock $scriptblock -ErrorAction Stop -ErrorVariable $admingroup
+    Invoke-Command -ComputerName $($admin.computername) -ScriptBlock $scriptblock ErrorVariable $admingroup
     Write-Output "Delete $($admin.users[$i]) from Administrators group on $($admin.computername)`r" #|Out-File C:\Script_logs\remove_local_admin_$(get-date -f MM-dd-yyyy).log -Append
 
 
