@@ -10,7 +10,7 @@ Function find_local_admin{
 foreach($i in Get-Complist){
     #test if machine is on the network
     if (!(Test-Connection -computername $i -count 1 -Quiet -ErrorAction SilentlyContinue)) {
-        Write-Warning "$i is Unavailable (Not Pingable)`r"
+        Write-Warning "$i is Unavailable (Not Pingable)" | tee-object -filepath c:\
         Continue
     }
     try{
