@@ -1,4 +1,4 @@
-#this script will find all machines in an OU then show who is all users in the local administrators group.
+#this script will find all machines in an OU then show who is in the local administrators group.
 
 Function Get-Complist{
 Get-ADObject -Filter { ObjectClass -eq "computer" } -SearchBase "OU=Workstations,DC=Contoso,DC=LOCAL"|
