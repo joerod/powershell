@@ -4,5 +4,5 @@
 a = "Jermaine O'Neal"
 if($a.contains("'")){
 
-($a.replace( "'","''"))
+$a = ($a.replace( "'","''"))
 }
