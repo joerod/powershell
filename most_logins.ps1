@@ -6,7 +6,7 @@
         action.
 
         I've added the ablity to choose either a file that contains a list of users to find most logins or one user
-        I've also added a fix for users with apostrophe's in their name
+        I've also added a fix for users with apostrophes in their name
 
     .EXAMPLE
      most_logins.ps1 -Name "Joe Rodriguez"
