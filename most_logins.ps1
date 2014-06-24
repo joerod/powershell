@@ -10,11 +10,16 @@
 
     .EXAMPLE
      most_logins.ps1 -Name "Joe Rodriguez"
-     This command will show what machine Joe Rodriguez logged into the most
+     This command will show what machine the single user Joe Rodriguez logged into the most
 
     .EXAMPLE
      most_logins.ps1 -File c:\users\joerod\desktop\users.txt
-     This command will show what machine all the users in the text file users.txt logged into the most
+     This command will show what machine all the users in the text file users.txt logged into the most.  Add one name per
+     line of text eg.
+     
+     john doe
+     jane doe
+     steve smith
 
   #>
 
