@@ -16,7 +16,7 @@ foreach ($computer in $computers){
      Invoke-Command -ComputerName $computer {
     $folders = Get-ChildItem C:\Users |select -expand name
       foreach ($folder in $folders){
-      if(($folder -notlike "Public") -and ($folder -notlike "administrator") -and ($folder -notlike "Default")){
+      if(($folder -notlike "Public") -and ($folder -notlike "administrator") -and ($folder -notlike "Default*")){
          Write-Output "removing $folder"
          cmd.exe /c del  "c:\Users\$folder" /f/s/q/a
          cmd.exe /c rmdir  "c:\Users\$folder" /s/q}
