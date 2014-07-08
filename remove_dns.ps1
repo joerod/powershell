@@ -18,7 +18,7 @@ get-wmiobject -ComputerName crpnycdcrt01 -Namespace root\microsoftDNS -Class Mic
  select IPAddress, ownername |
   ? {($_.IPAddress -like '172.17.*') -or ($_.IPAddress -like '172.19.*') -and ($_.IPAddress -notlike $null)} |
   Sort IPAddress #|
-  #export-csv C:\Users\jorodriguez\Desktop\$domainname.csv  -NoTypeInformation
+  #export-csv C:\Users\joerod\Desktop\$domainname.csv  -NoTypeInformation
   }
 
 
