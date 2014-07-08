@@ -8,24 +8,20 @@
 #>
 
 
-$domainnames =  Get-DnsServerZone -ComputerName dnsserver | ? {($_.IsReverseLookupzone -like "false") -and ($_.ZoneType -like "Primary") } |
-  select -ExpandProperty ZoneName
-
-foreach ($domainname in $domainnames){
+foreach ($domainname in (Get-DnsServerZone -ComputerName crpnycdcrt01 | ? {($_.IsReverseLookupzone -like "false") -and ($_.ZoneType -like "Primary") } |select -ExpandProperty ZoneName)){
 function list{
 
 get-wmiobject -ComputerName crpnycdcrt01 -Namespace root\microsoftDNS -Class MicrosoftDNS_ResourceRecord -Filter "domainname='$domainname'" |
  select IPAddress, ownername |
-  ? {($_.IPAddress -like '172.17.*') -or ($_.IPAddress -like '172.19.*') -and ($_.IPAddress -notlike $null)} |
+  ? {($_.IPAddress -like '10.7.*') -or ($_.IPAddress -like '10.9.*') -and ($_.IPAddress -notlike $null)} |
   Sort IPAddress #|
-  #export-csv C:\Users\joerod\Desktop\$domainname.csv  -NoTypeInformation
+  #export-csv C:\Users\jorodriguez\Desktop\$domainname.csv  -NoTypeInformation
   }
 
 
 ForEach($ip in list){
-#gives a usable DNS name  
 $ipnew = $ip.ownername -replace "\..+"
-#Remove-DnsServerResourceRecord -ZoneName "contoso.local" -RRType "A" -Name $($ip.ownername) -RecordData $($ip.IPAddress)
+#Remove-DnsServerResourceRecord -ZoneName "corporate.local" -RRType "A" -Name $($ip.ownername) -RecordData $($ip.IPAddress)
 dnscmd crpnycdcrt01 /RecordDelete $domainname $ipnew A $ip.IPAddress /f
 Write-output "$ipnew $($ip.IPAddress) has been removed from DNS" 
 }
