@@ -3,8 +3,7 @@
         This script will query all the zones on a DNS server then remove entries based on a criteria in this case IP
         Addresses
     .EXAMPLE
-     remove_dns.ps1.ps1
- 
+     remove_dns.ps1
 #>
 
 
