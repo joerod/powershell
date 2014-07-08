@@ -25,7 +25,7 @@ get-wmiobject -ComputerName crpnycdcrt01 -Namespace root\microsoftDNS -Class Mic
 ForEach($ip in list){
 #gives a usable DNS name  
 $ipnew = $ip.ownername -replace "\..+"
-#Remove-DnsServerResourceRecord -ZoneName "corporate.local" -RRType "A" -Name $($ip.ownername) -RecordData $($ip.IPAddress)
+#Remove-DnsServerResourceRecord -ZoneName "contoso.local" -RRType "A" -Name $($ip.ownername) -RecordData $($ip.IPAddress)
 dnscmd crpnycdcrt01 /RecordDelete $domainname $ipnew A $ip.IPAddress /f
 Write-output "$ipnew $($ip.IPAddress) has been removed from DNS" 
 }
