@@ -32,7 +32,7 @@ $OU = $LikeUN.Substring($LikeUN.IndexOf("OU="))
 
 #sets password
 $password = "Welcome1" |ConvertTo-SecureString -AsPlainText -Force
-New-ADUser -Name ($($oldaccount).displayname + " (Admin)") -SamAccountName $newuser -AccountPassword $password -GivenName $($oldaccount).givenname -Surname $($oldaccount).Surname `
+New-ADUser -Name ($($oldaccount).displayname + " (Admin)") -SamAccountName $newuser -AccountPassword $password -UserPrincipalName ($newuser + "@CONTOSO.LOCAL") -GivenName $($oldaccount).givenname -Surname $($oldaccount).Surname `
  -DisplayName ($($oldaccount).displayname + " (Admin)")  -Path $OU -ChangePasswordAtLogon $true -Enabled $true
 $newuser
 
