@@ -10,7 +10,7 @@
 foreach ($domainname in (Get-DnsServerZone -ComputerName crpnycdcrt01 | ? {($_.IsReverseLookupzone -like "false") -and ($_.ZoneType -like "Primary") } |select -ExpandProperty ZoneName)){
 function list{
 
-get-wmiobject -ComputerName crpnycdcrt01 -Namespace root\microsoftDNS -Class MicrosoftDNS_ResourceRecord -Filter "domainname='$domainname'" |
+get-wmiobject -ComputerName dnsserver -Namespace root\microsoftDNS -Class MicrosoftDNS_ResourceRecord -Filter "domainname='$domainname'" |
  select IPAddress, ownername |
   ? {($_.IPAddress -like '10.7.*') -or ($_.IPAddress -like '10.9.*') -and ($_.IPAddress -notlike $null)} |
   Sort IPAddress #|
