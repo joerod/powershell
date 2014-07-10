@@ -5,8 +5,7 @@
      
 #>
 
-$disabled = Get-ADUser -Properties * -Filter {Enabled -eq $false}
-  foreach($user in $disabled){
+  foreach($user in (Get-ADUser -Properties * -Filter {Enabled -eq $false})){
   try{
   if((get-Mailbox $($user.SamAccountName) -ErrorAction Stop | select -expand HiddenFromAddressListsEnabled) -eq $false){
 
