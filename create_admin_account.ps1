@@ -1,7 +1,11 @@
 <#
     .SYNOPSIS 
-  Created this script copy make admin accounts for best practices.  It copies the security groups and creates a new AD
-  Account named admin
+    Created this script copy make admin accounts for best practices.  It copies the security groups and creates a new AD
+    Account named admin
+  
+   .EXAMPLE
+    create_admin_account.ps1 -user someuser
+  
 #>
 
 Param(
