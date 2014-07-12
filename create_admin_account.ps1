@@ -1,5 +1,8 @@
-#Created this script copy make admin accounts for best practices.  It copies the security groups and creates a new AD
-#Account named admin
+<#
+    .SYNOPSIS 
+  Created this script copy make admin accounts for best practices.  It copies the security groups and creates a new AD
+  Account named admin
+#>
 
 Param(
 [Parameter(Position=0,mandatory=$true)]
