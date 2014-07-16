@@ -2,8 +2,8 @@
 Set-Alias gam C:\gam\gam.exe
 
 #Imports data from csv, mandatory column 1 (email) address
-$user = Import-Csv C:\scripts\users.csv
-foreach($i in $user){
+
+foreach($i in (Import-Csv C:\scripts\users.csv){
 
 $suspended = gam info user $($i.email) | Select-String -pattern "Account Suspended: false"
 
