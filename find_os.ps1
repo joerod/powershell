@@ -2,7 +2,7 @@
 
 Param(
 [Parameter(Position=0,mandatory=$true)]
-[array]$Machines
+[array[]]$Machines
 )
 
 foreach($machine in $machines){
