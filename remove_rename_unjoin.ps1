@@ -25,7 +25,7 @@ if (-not (Test-Connection -computername $computer -count 1 -Quiet -ErrorAction S
     foreach($i in $find_sep){
     msiexec.exe /x $i /qn /passive /l*v! c:\uninst.log 
      } 
-    } -ErrorVariable $removeapp_error
+    } -ErrorVariable removeapp_error
 
     #wait 2.5 minute for SEP to uninstall
     Write-Output "Waiting for SEP to uninstall"
@@ -53,7 +53,7 @@ if (-not (Test-Connection -computername $computer -count 1 -Quiet -ErrorAction S
    Invoke-Command -Session $session -Verbose -ScriptBlock { param($cred) 
         Write-Output "Unjoining from Domain..."
         Remove-Computer -UnjoinDomainCredential $cred -Passthru -force -Restart
-        } -ArgumentList $cred -ErrorVariable $tasks_error
+        } -ArgumentList $cred -ErrorVariable tasks_error
 
  }
 }
