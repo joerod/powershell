@@ -24,7 +24,8 @@ $Group = Get-ADGroupMember -Identity $SourceGroupCheck.SamAccountName
  New-ADGroup -Name $DestinationGroup -Path ($SourceGroupCheck.DistinguishedName -replace '^[^,]*,','') -GroupScope Global
     foreach ($Person in $Group) { 
       Add-ADGroupMember -Identity $DestinationGroup -Members $Person
- Write-Output "Group created and users copied"
+ 
                                  }
+      Write-Output "$DestinationGroup group created and users copied"
  }
                          
