@@ -7,11 +7,10 @@ $style = $style + "TH{border: 1px solid black; background: #dddddd; padding: 5px
 $style = $style + "TD{border: 1px solid black; padding: 5px; }"
 $style = $style + "</style>"
 
-$servers = @("mailboxserver1","mailboxserver2","mailboxserver3")
 
 Function Get-DBstatus{
-foreach($server in $servers){
-Get-MailboxDatabaseCopyStatus -Server $server |Select-Object DatabaseName, Mailboxserver,Status |? {($_.Status -ne "Healthy") -and ($_.Status -ne "Mounted") -and ($_.Status -notlike "Seeding*") } |ft
+foreach($server in (@("mailboxserver1","mailboxserver2","mailboxserver3"))){
+Get-MailboxDatabaseCopyStatus -Server $server |Select DatabaseName, Mailboxserver,Status |? {($_.Status -ne "Healthy") -and ($_.Status -ne "Mounted") -and ($_.Status -notlike "Seeding*") } |ft
    # ConvertTo-Html -Head $style
 
 
