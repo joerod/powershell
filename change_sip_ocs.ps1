@@ -1,11 +1,7 @@
 #This scrip will change the OCS (Outlook Communicator) login to conform with the users AD login. 
 
-$searchBase = 'ou=users,dc=contoso,dc=local'
  
-$users = Get-ADUser -filter { ObjectClass -eq "user" } -SearchBase $searchBase -SearchScope Subtree -Properties *|Select-Object SamAccountName, Name
-
- 
-ForEach ($user in $users) {
+ForEach ($user in (Get-ADUser -filter { ObjectClass -eq "user" } -SearchBase 'ou=users,dc=contoso,dc=local' -SearchScope Subtree -Properties *|Select-Object SamAccountName, Name)) {
    
     Write-Host "Adding SIP" $user.samaccountname "to" $user.name
     Set-ADUser -Identity $user.samaccountname -clear ProxyAddresses
