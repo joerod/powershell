@@ -20,10 +20,11 @@ Get-DnsServerResourceRecord -zonename contoso.local |Select-Object Hostname, Tim
 Get-DNSentry
 
 Function Compare-CSV {
-$baseline = Import-csv -Path C:\temp\baseline.csv -Header "Computername","IPAddress", "Date" 
-$new = Import-csv -Path C:\temp\update2.csv -Header "Computername","IPAddress", "Date"
+$baseline = 
+$new = 
 
-Compare-Object $baseline $new -Property "Computername" -PassThru | Where-Object{$_.SideIndicator -eq '=>'} |
+Compare-Object (Import-csv -Path C:\temp\baseline.csv -Header "Computername","IPAddress", "Date") (Import-csv -Path C:\temp\update2.csv -Header "Computername","IPAddress", "Date") -Property "Computername" -PassThru | 
+ ?{$_.SideIndicator -eq '=>'} |
   Select-Object  "Computername", "IPAddress", "Date"
 }
 
