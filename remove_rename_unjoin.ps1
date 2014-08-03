@@ -46,7 +46,7 @@ if (-not (Test-Connection -computername $computer -count 1 -Quiet -ErrorAction S
         $user.SetPassword("$newpassword")
 
    
- } -ErrorVariable $tasks_error
+ } -ErrorVariable tasks_error
 
 
    $session = $computer |New-PSSession -Credential $cred
