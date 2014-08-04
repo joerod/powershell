@@ -55,6 +55,8 @@ Get-ChildItem  -Force "c:\" -ErrorAction SilentlyContinue |
     $acl.AddAccessRule($rule)
     $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("$myGroup", "Modify", "ContainerInherit, ObjectInherit", "None", "Allow")
     $acl.AddAccessRule($rule)
+    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("$myGroup", "FullControll", "ContainerInherit, ObjectInherit", "None", "Allow")
+    $acl.AddAccessRule($rule)
     Set-Acl $folder $acl
       } 
    
