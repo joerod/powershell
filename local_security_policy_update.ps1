@@ -7,7 +7,7 @@
 foreach($user in (Import-Csv C:\users\joeord\Desktop\user_machines.csv)){
 
 
-$sid = (get-aduser $user.user -Properties sid).sid.value
+$sid = (get-aduser $user.user).sid.value
 
 
 
