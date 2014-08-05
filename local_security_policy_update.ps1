@@ -11,7 +11,7 @@ $sid = (get-aduser $user.user -Properties sid).sid.value
 
 
 
-Invoke-Command $user.machine -ArgumentList $sid $user{
+Invoke-Command $user.machine -ArgumentList $sid,$user{
 param($sid,
 $user
 )
