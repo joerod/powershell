@@ -29,7 +29,7 @@ try{
     Write-output "Copying files"
     Copy-Item -Path C:\Users\joerod\Desktop\vcmagent\* -Destination \\$Computer\$DriveLetter$\$Path
 
-  $args = “cmd /c c:\software\CMAgentInstall.exe /s INSTALLPATH=%Systemroot%\CMAgent PORT=26542 CERT=C:\Software\VMware_VCM_Enterprise_Certificate_E5BC8577-798A-4721-BB5A-357A45C4378A.pem"
+  $args = "cmd /c c:\software\CMAgentInstall.exe /s INSTALLPATH=%Systemroot%\CMAgent PORT=26542 CERT=C:\Software\VMware_VCM_Enterprise_Certificate_E5BC8577-798A-4721-BB5A-357A45C4378A.pem"
   $result = Invoke-WmiMethod -ComputerName $computer -Class Win32_Process -Name Create -ArgumentList $args
  if ($result.ReturnValue -ne 0)
         {
