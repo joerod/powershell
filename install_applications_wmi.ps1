@@ -11,7 +11,7 @@ $path = 'Software'
 $logpath = 'C:\Script_logs'
 
 #creates folder on local machine to save logs to
-   if(-not (Test-Path $logpath)){
+   if(-not (Test-Path $logpath -PathType Container)){
       New-Item -Path $logpath -type directory -Force |Out-Null
     }
 
