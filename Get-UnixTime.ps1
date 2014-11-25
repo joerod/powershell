@@ -1,4 +1,5 @@
 #this script will give you the same output as dir or ls but give unix time instead of standard time.
+#usage is Get-UnixTime c:\
 
 [CmdletBinding()]
    	Param(
