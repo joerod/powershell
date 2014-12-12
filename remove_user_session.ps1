@@ -7,7 +7,7 @@ param(
 
 process {
     foreach ($Computer in $ComputerName) {
-        quser /server:$Computer | Select-Object -Skip 1 | ForEach-Object {
+        quser /server:$Computer | Select-Object -Skip 1 | % {
             $CurrentLine = $_.Trim() -Replace '\s+',' ' -Split '\s'
             $HashProps = @{
                 UserName = $CurrentLine[0]
