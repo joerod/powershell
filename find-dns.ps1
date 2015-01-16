@@ -1,3 +1,14 @@
+<#
+    .SYNOPSIS 
+      Searches DNS for records based on user input.  The -DeleteRecord switch will remove the record.  User can also specify DNS and zone to query.
+    .EXAMPLE
+     Find-DNS -Search Test
+     This command finds records in DNS named "Test"
+     .EXAMPLE
+     Find-DNS -Search Test -DeleteRecord
+     This command finds records in DNS named "Test" and deletes the record.  If an A recored is selected the PTR record is also removed
+  #>
+
 function Find-DNS {
 
 param(
