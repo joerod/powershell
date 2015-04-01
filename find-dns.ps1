@@ -7,6 +7,9 @@
      .EXAMPLE
      Find-DNS -Search Test -DeleteRecord
      This command finds records in DNS named "Test" and deletes the record.  If an A recored is selected the PTR record is also removed
+     .EXAMPLE
+     Find-DNS -Search Test -Server DNSServer01 -Zone contoso.root
+     This will search for DNS record Test on a specified DNS server and a specified Zone on that server.  
   #>
 
 function Find-DNS {
