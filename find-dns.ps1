@@ -1,60 +1,51 @@
-<#
-    .SYNOPSIS 
-      Searches DNS for records based on user input.  The -DeleteRecord switch will remove the record.
-    .EXAMPLE
-     Find-DNS -Search Test
-     This command finds records in DNS named "Test"
-     .EXAMPLE
-     Find-DNS -Search Test -DeleteRecord
-     This command finds records in DNS named "Test" and deletes the record.  If an A recored is selected the PTR record is also removed
-     .EXAMPLE
-     Find-DNS -Search Test -Server DNSServer01 -Zone contoso.root
-     This will search for DNS record Test on a specified DNS server and a specified Zone on that server.  
-  #>
+#Gets Records
+$zone = 'take2.t2.corp'
+$Server = 'tk2nycdmc1'
+#Create empty arrays
+$Aarray = New-Object system.collections.arraylist
+$CNAMEarray = New-Object system.collections.arraylist
 
-function Find-DNS {
+foreach ($recordtype in ("A", "CNAME")){
+    Switch ($recordtype){
+ 
+        "A"{
 
-param(
-    [Parameter(Position=1)]
-    [string]
-    $Zone = "Contoso.local",
+            $record = "A"
+            $array = $Aarray
+        }
 
-    [Parameter(Position=2)]
-    [string]
-    $Server = "DNS_Server",
+        "CNAME"{
 
-    [Parameter(Position=0, Mandatory=$True)]
-    [string]
-    $Search,
+            $record = "CNAME"
+            $array = $CNAMEarray
 
-    [switch]$DeleteRecord
-    )
+        }
 
-# Script requires Powershell 4 or greater.
-$version = (Get-Host).Version.major
-if($version -lt 4){
- Write-Output "You need to upgrade your powershell version in order to run this script."
- Write-Output "Your current verion is $version you need verion 4 or higher"  
- exit
-}
+    }
+    
+    foreach ($findrecord in (Get-DnsServerResourceRecord -ComputerName $Server -ZoneName $zone -RRType $record)){
+        if ($record -eq "A"){
+            if ($findrecord.HostName -notmatch '[a-z]-' -and $findrecord.HostName -notlike "DomainDnsZones" -and $findrecord.HostName -notlike "@"){
+                Write-Verbose "Running Ping test on $findrecord.HostName"
+                if (!(Test-Connection $findrecord.HostName -count 1)){
+                    $array.Add($findrecord.HostName) | Out-Null
+                }
 
-$arecord = Get-DnsServerResourceRecord -ComputerName $Server -ZoneName $Zone | ? {$_.HostName -like "*$search*"}
-$arecord
- if($arecord -eq $null){
-   Write-Output "Record for $search cannot be found"
- }
-  else{
-  $status = 1
-  }
+        
+            }
+            else {
+                foreach ($Cname in $findrecord){
+                    #Formats host names
+                    $Cname = ($Cname.RecordData.HostNameAlias).Substring(0, ($Cname.RecordData.HostNameAlias.IndexOf('.')))  
+                    Write-Verbose "Checking if there is an A record for $Cname"
+                    if (!(Get-DnsServerResourceRecord -ComputerName $Server -ZoneName $Zone -RRType 'A'| ? { $_.HostName -like "$cname" })){
+                        $array.Add($Cname) | Out-Null
+                    }
+                }
+            }
 
+        }
+    }
 
-if($DeleteRecord -and $status -eq 1){
-
-$arecord[1] | %{
-  Remove-DnsServerResourceRecord -ComputerName $Server -ZoneName $Zone -RRType $_.RecordType -Name $_.hostname -RecordData $_.RecordData.ipv4address.IPAddressToString -Force
-   } 
-   Write-Host "$arecord[1] has been removed" -backgroundcolor Red
-  }
 
 }
-Find-DNS
