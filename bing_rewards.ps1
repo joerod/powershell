@@ -1,4 +1,4 @@
-#I created this script to gain more Bing Rewards.  I have it running as a schedualed task every hour while I'm a sleep.
+#I created this script to gain more Bing Rewards.  I have it running as a schedualed task every hour while I'm asleep.
 #The script gets its searches by querying google trends for that day then it opens IE with the search. 
 
 Function QueryBing($Query){
@@ -6,7 +6,7 @@ Function QueryBing($Query){
     $Query = [Web.HttpUtility]::UrlEncode($Query)
     $IE.navigate2("https://www.bing.com/search?q=" + $query)
     $IE.visible = $true
-    Start-Sleep -Seconds 20
+    Start-Sleep -Seconds 5
     Get-Process iexplore | Stop-Process
 }
 
