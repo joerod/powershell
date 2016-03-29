@@ -8,7 +8,6 @@ Function Find-HousePrice($Address, $Citystatezip){
 
     $ZWSID = ""
     $result = Invoke-RestMethod ("http://www.zillow.com/webservice/GetSearchResults.htm?zws-id=" + $ZWSID + "&address=$address&citystatezip=$citystatezip") -Method Get
-    #$result.searchresults.response.results.result.zestimate.amount.'#text'
     "{0:C0}" -f [int] $result.searchresults.response.results.result.zestimate.amount.'#text'
 }
 
