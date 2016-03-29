@@ -2,7 +2,7 @@
 #Usage Find-HousePrice -Address '123 Sesame St.' -Citystatezip 11237
 #You must register on the Zillow site for a ZWSID for this scirpt to work
 
-Function Find-HousePrice($Address, $Citystatezip){
+Function Find-HousePrice($Address, $CityStateZip){
     $address = [System.Web.HttpUtility]::UrlEncode($address)
     $citystatezip = [System.Web.HttpUtility]::UrlEncode($citystatezip)
 
@@ -11,4 +11,4 @@ Function Find-HousePrice($Address, $Citystatezip){
     "{0:C0}" -f [int] $result.searchresults.response.results.result.zestimate.amount.'#text'
 }
 
-Find-HousePrice -Address '123 Sesame St' -Citystatezip 11211
+Find-HousePrice -Address '123 Sesame St' -CityStateZip 11211
