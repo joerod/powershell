@@ -15,10 +15,8 @@ get-adgroup -SearchBase "OU=UnixGroups,DC=Contoso,DC=LOCAL" -filter 'Name -eq $u
 
 Function NextGid {
 #gets the next avalible gid number to assign to the object
-$gidnum = Get-ADObject -SearchBase "OU=UnixGroups,DC=Contoso,DC=LOCAL" -filter {gidnumber -like "*"}  -Properties * | 
-  select -ExpandProperty gidnumber |
-  sort gidnumber
-$next =$gidnum |Measure -Maximum |select -ExpandProperty maximum
+$gidnum = (Get-ADObject -SearchBase "OU=UnixGroups,DC=Contoso,DC=LOCAL" -filter {gidnumber -like "*"}  -Properties gidnumber).gidnumber | sort gidnumber
+$next = $gidnum[-1]
 #skips GID 8000 
   if ($next -eq 8000){
     $next = 8001
