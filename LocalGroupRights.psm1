@@ -23,7 +23,7 @@ Function Add-LocalGroupRights {
         [Parameter(Position = 3)] $Group = 'Administrators'
     )
 $GroupInfo = [ADSI] "WinNT://$ComputerName/$Group,group"
-$ToAdd = [ADSI] "WinNT://AD.MLP.COM/$Name,$Type"
+$ToAdd = [ADSI] "WinNT://AD.JOEROD.COM/$Name,$Type"
 $GroupInfo.Add($ToAdd.Path)
 }
 
@@ -37,7 +37,7 @@ Function Remove-LocalGroupRights {
         [Parameter(Position = 3)] $Group = 'Administrators'
     )
 $GroupInfo = [ADSI] "WinNT://$ComputerName/$Group,group"
-$ToRemove = [ADSI] "WinNT://AD.MLP.COM/$Name,$Type"
+$ToRemove = [ADSI] "WinNT://AD.JOEROD.COM/$Name,$Type"
 $GroupInfo.Remove($ToRemove.Path)
 }
 
