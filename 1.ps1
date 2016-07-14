@@ -14,3 +14,8 @@ $confluence.getSpaces($token)
 foreach ($global:page in ($confluence.getpages($token,$searchfor))){
 
 }
+
+
+Get-WmiObject -Class Win32_Volume -Filter 'DriveType = 5' | %{
+Get-WmiInstance -InputObject $_ -Arguments @{DriveLetter = "X:" } 
+}
