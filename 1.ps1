@@ -8,4 +8,8 @@ $Task.Task.Actions.Exec.Arguments = $Task.task.Actions.Exec.Arguments  + " -Comp
 $Task.task.Triggers.CalendarTrigger.StartBoundary = [string](Get-Date $Date -Format s)
 $Task.Save($File )
 
-#https://www.petri.com/import-scheduled-tasks-powershell
+Register-ScheduledTask -Xml (Get-Content $File | Out-String) -TaskName "SN Automation SNMP Restart"
+while((Get-ScheduledTask -TaskName "SN Automation SNMP Restart").state -eq 'Running'){
+Start-Sleep -Seconds 1
+}
+Unregister-ScheduledTask -TaskName "SN Automation SNMP Restart"
