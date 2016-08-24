@@ -7,3 +7,5 @@ $File = 'C:\Users\joerod\Desktop\Delete Driveway Camera Videos.xml'
 $Task.Task.Actions.Exec.Arguments = $Task.task.Actions.Exec.Arguments  + " -Computer $Computer"
 $Task.task.Triggers.CalendarTrigger.StartBoundary = [string](Get-Date $Date -Format s)
 $Task.Save($File )
+
+#https://www.petri.com/import-scheduled-tasks-powershell
