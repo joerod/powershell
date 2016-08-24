@@ -1,21 +1,9 @@
-$folder_Search = New-Object System.Collections.ArrayList
-$folder_find = New-Object System.Collections.ArrayList
-$confluence = New-WebServiceProxy -uri https://confluence/rpc/soap-axis/confluenceservice-v2?wsdl -namespace Confluence_API
-$confluence.Timeout = 1000000
-$username = 'joe.rodriguez'
-$password = ''
-$searchfor = ""
-$page_key = ''
-$destination_space = ''
-$title_append = ''  
-
-$token = $confluence.login($username, $password)
-$confluence.getSpaces($token)
-foreach ($global:page in ($confluence.getpages($token,$searchfor))){
-
-}
-
-
-Get-WmiObject -Class Win32_Volume -Filter 'DriveType = 5' | %{
-Get-WmiInstance -InputObject $_ -Arguments @{DriveLetter = "X:" } 
-}
+$Computer = $env:COMPUTERNAME
+$File = 'C:\Users\joerod\Desktop\Delete Driveway Camera Videos.xml'
+[xml]$Task = Get-Content $File
+#Adding 15 seconds to give time for the script to complete and the task to execute
+[string]$Date =  (Get-Date).AddSeconds(15).ToString("MM/dd/yyyy hh:mm:ss")
+#Adding 
+$Task.Task.Actions.Exec.Arguments = $Task.task.Actions.Exec.Arguments  + " -Computer $Computer"
+$Task.task.Triggers.CalendarTrigger.StartBoundary = [string](Get-Date $Date -Format s)
+$Task.Save($File )
