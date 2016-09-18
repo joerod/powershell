@@ -10,7 +10,7 @@ Param(
 [String]$ToUser
 )
 Function Copy-AdGroups{
-foreach($i in (get-aduser $CopyUser -Properties memberOF |Select-Object memberOF -ExpandProperty memberOF)){
+foreach($i in ((get-aduser $CopyUser -Properties memberOF).memberOF){
 Add-ADPrincipalGroupMembership -Identity $ToUser -MemberOf $i
 Write-Host "Copied $i to $ToUser"
 }
