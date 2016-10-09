@@ -1,13 +1,14 @@
 #I created this script to gain more Bing Rewards.  I have it running as a schedualed task every hour while I'm asleep.
 #The script gets its searches by querying google trends for that day then it opens IE with the search. 
+Add-Type -AssemblyName System.Web  
 
 Function QueryBing{
  [cmdletbinding()]
    param(
    [parameter(mandatory=$true,ValueFromPipeline=$True,Position=0)]
-   [string[]] $Query)
+   [string[]] $Query) 
     $IE = New-Object -ComObject internetexplorer.application
-    $Query = [Web.HttpUtility]::UrlEncode($Query)
+    $Query = [System.Web.HttpUtility]::UrlEncode($Query)
     $IE.navigate2("https://www.bing.com/search?q=" + $query)
     $IE.visible = $true
     Start-Sleep -Seconds 2
@@ -21,7 +22,9 @@ Function Get-GoogleTrends{
 }
 
 #loop twice because the xml from google  only yeilds 20 results and bing allows 30 queries for rewards 
-for ($i -eq 0; $i -lt 2; $i++)
+$i = 0
+for ($i -eq 0; $i -lt 2; )
 {
 Get-GoogleTrends | %{QueryBing $_}
+$i++
 }
