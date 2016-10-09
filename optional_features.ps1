@@ -1,6 +1,6 @@
 Param(
 [Parameter(Position=0,mandatory=$true)]
-[string]$Hostname
+[string]$Hostname = $env:COMPUTERNAME
 )
 
  gwmi win32_OptionalFeature -computername $Hostname `
