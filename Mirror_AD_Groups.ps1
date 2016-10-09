@@ -8,16 +8,16 @@
 
 Function Copy-AdGroups{
     
-Param(
-[String]$CopyUser,
-[String]$ToUser
-)
+    Param (
+        [String] $CopyUser,
+        [String] $ToUser
+    )
     
-Foraach($GroupMember in ((get-aduser $CopyUser -Properties memberOF).memberOF){
-Add-ADPrincipalGroupMembership -Identity $ToUser -MemberOf $GroupMember
-Write-Verbose ("Copied {0} to {1}" -f $GroupMember,$ToUser)
-}
+    Foraach ($GroupMember in((get-aduser $CopyUser -Properties memberOF).memberOF){
+            Add-ADPrincipalGroupMembership -Identity $ToUser -MemberOf $GroupMember
+            Write-Verbose ("Copied {0} to {1}" -f $GroupMember, $ToUser)
+        }
 
-}
-#Usage
-Copy-AdGroups-CopyUser joerod -ToUser avarod
+    }
+    #Usage
+    Copy-AdGroups-CopyUser joerod -ToUser avarod
