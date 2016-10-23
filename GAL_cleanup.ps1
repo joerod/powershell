@@ -27,7 +27,7 @@ function GAL_Cleanup{
 
   foreach($user in (Get-ADUser -Properties * -Filter {Enabled -eq $false})){
   try{
-  if((get-Mailbox $($user.SamAccountName) -ErrorAction Stop | select -expand HiddenFromAddressListsEnabled) -eq $false){
+  if(((get-Mailbox $($user.SamAccountName) -ErrorAction Stop).HiddenFromAddressListsEnabled) -eq $false){
 
   
 New-Object -TypeName PSCustomObject -Property @{
