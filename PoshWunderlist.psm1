@@ -1,18 +1,37 @@
+#You must specify an Access Token and Client ID for this scirpt to work.  Get this here https://developer.wunderlist.com/apps/new
 $headers = @{}
 $headers.Add("X-Access-Token", "")
 $headers.Add("X-Client-ID", "")
 
 #get list of all lists
 Function Get-Wunderlist{
-    Invoke-RestMethod -Uri "https://a.wunderlist.com/api/v1/lists" -Method Get -Headers $headers
+    $Data = Invoke-RestMethod -Uri "https://a.wunderlist.com/api/v1/lists" -Method Get -Headers $headers -ContentType 'application/json'
+    return $Data
 }
 
-Get-Wunderlist
+#Finds a Wunderlist with a title like $Title, min 3 characters max 30
+Function Find-Wunderlist{
+    Param (
+        [ValidateLength(3,30)]
+        [parameter(ValueFromPipeline)]
+        [parameter(ValueFromPipelineByPropertyName)]
+        [string]$Title
+    )
+    Get-Wunderlist | % {
+        if ($_.title -like "*$Title*"){
+            $_
+        }
+    }
+}
+
+#Find-Wunderlist -Title testing
 
 #create a list
 Function Make-Wunderlist{
     Param (
-        [string]$Title
+        [parameter(ValueFromPipeline)]
+        [parameter(ValueFromPipelineByPropertyName)]
+        [string] $Title
     )
 
     $body = @{
@@ -26,8 +45,10 @@ Function Make-Wunderlist{
 #get specific task
 Function Get-WunderlistTask{
     Param (
-        [int] $ListID,
-        [string] $Completed = 'False'
+        [parameter(ValueFromPipeline)]
+        [parameter(ValueFromPipelineByPropertyName)]
+        [int]$ListID,
+        [string]$Completed = 'False'
     )
 
     Invoke-RestMethod -Uri "https://a.wunderlist.com/api/v1/tasks?list_id=$ListID&completed=$Completed" -Method Get -Headers $headers -ContentType 'application/json'
@@ -40,8 +61,10 @@ Function Get-WunderlistTask{
 Function Add-WunderlistTask{
 
     Param (
-        [int] $ListID,
-        [String] $TaskName
+        [parameter(ValueFromPipeline)]
+        [parameter(ValueFromPipelineByPropertyName)]
+        [int]$ListID,
+        [String]$TaskName
     )
 
 
@@ -55,13 +78,15 @@ Function Add-WunderlistTask{
 
 #Add-WunderlistTask -ListID 251331943 -TaskName "Function test"
 
-Function Remove-Wunderlist {
-   Param (
-        [int]$ListID,
+Function Remove-Wunderlist{
+    Param (
+        [parameter(ValueFromPipeline)]
+        [parameter(ValueFromPipelineByPropertyName)]
+        [int[]]$ListID,
         [string]$Revision
     )
 
-Invoke-RestMethod -Uri ("https://a.wunderlist.com/api/v1/lists/$ListID" + "?revision=$Revision") -Method Delete -Headers $headers
+    Invoke-RestMethod -Uri ("https://a.wunderlist.com/api/v1/lists/$ListID" + "?revision=$Revision") -Method Delete -Headers $headers
 
 }
 
