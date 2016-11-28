@@ -5,8 +5,7 @@ $headers.Add("X-Client-ID", "")
 
 #get list of all lists
 Function Get-Wunderlist{
-    $Data = Invoke-RestMethod -Uri "https://a.wunderlist.com/api/v1/lists" -Method Get -Headers $headers -ContentType 'application/json'
-    return $Data
+    Invoke-RestMethod -Uri "https://a.wunderlist.com/api/v1/lists" -Method Get -Headers $headers -ContentType 'application/json'
 }
 
 #Finds a Wunderlist with a title like $Title, min 3 characters max 30
