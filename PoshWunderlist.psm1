@@ -1,4 +1,4 @@
-#You must specify an Access Token and Client ID for this scirpt to work.  Get this here https://developer.wunderlist.com/apps/new
+#You must specify an Access Token and Client ID for this script to work.  Get this here https://developer.wunderlist.com/apps/new
 $headers = @{}
 $headers.Add("X-Access-Token", "")
 $headers.Add("X-Client-ID", "")
