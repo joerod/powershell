@@ -8,6 +8,8 @@ Function Get-Wunderlist{
     Invoke-RestMethod -Uri "https://a.wunderlist.com/api/v1/lists" -Method Get -Headers $headers -ContentType 'application/json'
 }
 
+#Get-Wunderlist
+
 #Finds a Wunderlist with a title like $Title, min 3 characters max 30
 Function Find-Wunderlist{
     Param (
