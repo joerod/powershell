@@ -1,5 +1,10 @@
 Function Get-RealName ($SAMAccountName){
-(Get-ADUser $SAMAccountName).Name
+try{
+(Get-ADUser $SAMAccountName -ErrorAction Stop).Name
+}
+catch{
+Write-Output "Cannot find $SAMAccountName"
+}
 }
 
 Add-Type -AssemblyName System.Windows.Forms
