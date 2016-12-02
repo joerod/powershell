@@ -1,10 +1,15 @@
-Function Get-RealName ($SAMAccountName){
-try{
-(Get-ADUser $SAMAccountName -ErrorAction Stop).Name
-}
-catch{
-Write-Output "Cannot find $SAMAccountName"
-}
+#Wrote this as my first attempt at GUI POSH. This script accepts an Active Directory Users by SamAccontName and returns
+#a users Real Name as listed in AD.  The end result is a pop-up window with the users real name.
+#To Do
+#Error checking
+
+Function Get-RealName($SAMAccountName){
+    try {
+        (Get-ADUser $SAMAccountName -ErrorAction Stop).Name
+    }
+    catch {
+        Write-Output "Cannot find $SAMAccountName"
+    }
 }
 
 Add-Type -AssemblyName System.Windows.Forms
