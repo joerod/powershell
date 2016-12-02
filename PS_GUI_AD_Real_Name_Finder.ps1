@@ -1,7 +1,6 @@
-#Wrote this as my first attempt at GUI POSH. This script accepts an Active Directory Users by SamAccontName and returns
-#a users Real Name as listed in AD.  The end result is a pop-up window with the users real name.
-#To Do
-#Error checking
+Function Get-RealName ($SAMAccountName){
+(Get-ADUser $SAMAccountName).Name
+}
 
 Add-Type -AssemblyName System.Windows.Forms
 
@@ -25,7 +24,7 @@ $button1_SAMAccountName.Width = 100
 $button1_SAMAccountName.Height = 30
 $button1_SAMAccountName.Add_Click({
         $wshell = New-Object -ComObject Wscript.Shell
-        $wshell.Popup(((Get-ADUser $textBox1_SAMAccountName.text).Name), 0, "Real Name", 0x1)
+        $wshell.Popup((Get-RealName -SamAccountName $textBox1_SAMAccountName.text), 0, "Real Name", 0x1)
     })
 $button1_SAMAccountName.location = new-object system.drawing.point(314, 23)
 $button1_SAMAccountName.Font = "Microsoft Sans Serif,10"
