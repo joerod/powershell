@@ -1,6 +1,6 @@
 #I wrote this script as a Powershell clone to the Linux "uptime" application
 
-Function Uptime($Computer = $env:COMPUTERNAME){
+Function Get-Uptime($Computer = $env:COMPUTERNAME){
     $date = Get-Date -Format HH:mm:ss
     $lastbootuptime = Get-WmiObject win32_operatingsystem -ComputerName $Computer
     $uptime = [datetime]::Now – $lastbootuptime.ConverttoDateTime($lastbootuptime.lastbootuptime)
@@ -9,4 +9,4 @@ Function Uptime($Computer = $env:COMPUTERNAME){
 }
 
 #usage
-#Uptime -Computername pc001
+#Get-Uptime -Computername pc001
