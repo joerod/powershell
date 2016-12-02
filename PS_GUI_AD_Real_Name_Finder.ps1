@@ -17,6 +17,8 @@ $GetActiveDirectoryUser.Text = "GetActiveDirectoryUser"
 $GetActiveDirectoryUser.TopMost = $true
 $GetActiveDirectoryUser.Width = 450
 $GetActiveDirectoryUser.Height = 150
+$GetActiveDirectoryUser.Icon = [system.drawing.icon]::ExtractAssociatedIcon($PSHOME + "\powershell.exe")
+
 
 $textBox1_SAMAccountName = New-Object system.windows.Forms.TextBox
 $textBox1_SAMAccountName.Width = 165
