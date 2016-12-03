@@ -22,27 +22,25 @@ Function Get-Wunderlist{
 #Get-Wunderlist
 
 #Finds a Wunderlist with a title like $Title, min 3 characters max 30
+
 Function Find-Wunderlist{
     Param (
         [ValidateLength(3, 30)]
-        [parameter(ValueFromPipeline)]
-        [parameter(ValueFromPipelineByPropertyName)]
         [string] $Title
     )
-    Get-Wunderlist | % {
-        if ($_.title -like "*$Title*"){
-            $_
+    Foreach($list in (Get-Wunderlist)){
+
+        if ($list.title -like $Title){
+            return $list
+            break
         }
     }
 }
 
-#Find-Wunderlist -Title testing
-
+Find-Wunderlist -Title 'Testing Again1'
 #create a list
 Function Make-Wunderlist{
     Param (
-        [parameter(ValueFromPipeline)]
-        [parameter(ValueFromPipelineByPropertyName)]
         [string] $Title
     )
 
@@ -52,14 +50,12 @@ Function Make-Wunderlist{
     Invoke-RestMethod -Uri "https://a.wunderlist.com/api/v1/lists" -Method Post -Headers $headers -Body (ConvertTo-Json $body) -ContentType 'application/json'
 }
 
-#Make-Wunderlist -Title "Testing Again"
+#Make-Wunderlist -Title "Testing Again1"
 
 #get specific task
 Function Get-WunderlistTask{
     Param (
-        [parameter(ValueFromPipeline)]
-        [parameter(ValueFromPipelineByPropertyName)]
-        [int] $ListID,
+        [string] $ListID,
         [string] $Completed = 'False'
     )
 
@@ -73,8 +69,6 @@ Function Get-WunderlistTask{
 Function Add-WunderlistTask{
 
     Param (
-        [parameter(ValueFromPipeline)]
-        [parameter(ValueFromPipelineByPropertyName)]
         [int] $ListID,
         [String] $TaskName
     )
@@ -92,8 +86,6 @@ Function Add-WunderlistTask{
 
 Function Remove-Wunderlist{
     Param (
-        [parameter(ValueFromPipeline)]
-        [parameter(ValueFromPipelineByPropertyName)]
         [int[]] $ListID,
         [string] $Revision
     )
@@ -102,4 +94,4 @@ Function Remove-Wunderlist{
 
 }
 
-#Remove-Wunderlist -ListID 277820327 -Revision 1
+#Remove-Wunderlist -ListID 279736834 -Revision 1
