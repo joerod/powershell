@@ -11,7 +11,8 @@ Function  Get-Credential {
     return $auth
 }
 
-$headers = Get-Credential -AccessToken xxxxxxxxxxxxxxxxx -ClientID xxxxxxxxxxxxxxxxx
+$headers = Get-Credential -AccessToken xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -ClientID xxxxxxxxxxxxxxxxxxxx
+
 
 #get list of all lists
 Function Get-Wunderlist{
