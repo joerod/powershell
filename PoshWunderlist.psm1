@@ -1,5 +1,5 @@
 #You must specify an Access Token and Client ID for this script to work.  Get this here https://developer.wunderlist.com/apps/new
-Function  Get-Credential {
+Function  Get-WunderlistCredential {
     Param (
         [string] $AccessToken,
         [string] $ClientID
@@ -11,7 +11,7 @@ Function  Get-Credential {
     return $auth
 }
 
-$headers = Get-Credential -AccessToken xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -ClientID xxxxxxxxxxxxxxxxxxxx
+$headers = Get-WunderlistCredential -AccessToken xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -ClientID xxxxxxxxxxxxxxxxxxxx
 
 
 #get list of all lists
