@@ -1,7 +1,17 @@
 #You must specify an Access Token and Client ID for this script to work.  Get this here https://developer.wunderlist.com/apps/new
-$headers = @{}
-$headers.Add("X-Access-Token", "")
-$headers.Add("X-Client-ID", "")
+Function  Get-Credential {
+    Param (
+        [string] $AccessToken,
+        [string] $ClientID
+    )
+
+    $auth = @{}
+    $auth.Add("X-Access-Token", "$AccessToken")
+    $auth.Add("X-Client-ID", "$ClientID")
+    return $auth
+}
+
+$headers = Get-Credential -AccessToken xxxxxxxxxxxxxxxxx -ClientID xxxxxxxxxxxxxxxxx
 
 #get list of all lists
 Function Get-Wunderlist{
@@ -13,10 +23,10 @@ Function Get-Wunderlist{
 #Finds a Wunderlist with a title like $Title, min 3 characters max 30
 Function Find-Wunderlist{
     Param (
-        [ValidateLength(3,30)]
+        [ValidateLength(3, 30)]
         [parameter(ValueFromPipeline)]
         [parameter(ValueFromPipelineByPropertyName)]
-        [string]$Title
+        [string] $Title
     )
     Get-Wunderlist | % {
         if ($_.title -like "*$Title*"){
@@ -48,8 +58,8 @@ Function Get-WunderlistTask{
     Param (
         [parameter(ValueFromPipeline)]
         [parameter(ValueFromPipelineByPropertyName)]
-        [int]$ListID,
-        [string]$Completed = 'False'
+        [int] $ListID,
+        [string] $Completed = 'False'
     )
 
     Invoke-RestMethod -Uri "https://a.wunderlist.com/api/v1/tasks?list_id=$ListID&completed=$Completed" -Method Get -Headers $headers -ContentType 'application/json'
@@ -64,8 +74,8 @@ Function Add-WunderlistTask{
     Param (
         [parameter(ValueFromPipeline)]
         [parameter(ValueFromPipelineByPropertyName)]
-        [int]$ListID,
-        [String]$TaskName
+        [int] $ListID,
+        [String] $TaskName
     )
 
 
@@ -83,8 +93,8 @@ Function Remove-Wunderlist{
     Param (
         [parameter(ValueFromPipeline)]
         [parameter(ValueFromPipelineByPropertyName)]
-        [int[]]$ListID,
-        [string]$Revision
+        [int[]] $ListID,
+        [string] $Revision
     )
 
     Invoke-RestMethod -Uri ("https://a.wunderlist.com/api/v1/lists/$ListID" + "?revision=$Revision") -Method Delete -Headers $headers
