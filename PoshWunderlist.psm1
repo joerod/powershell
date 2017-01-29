@@ -22,22 +22,19 @@ Function Get-Wunderlist{
 #Get-Wunderlist
 
 #Finds a Wunderlist with a title like $Title, min 3 characters max 30
-
 Function Find-Wunderlist{
     Param (
         [ValidateLength(3, 30)]
         [string] $Title
     )
-    Foreach($list in (Get-Wunderlist)){
-
-        if ($list.title -like $Title){
-            return $list
-            break
-        }
+    foreach($list in (Get-Wunderlist)){
+        if ($list.title -like "*$Title*"){
+        $list
+        }  
     }
 }
+#Find-Wunderlist -Title Groceries
 
-Find-Wunderlist -Title 'Testing Again1'
 #create a list
 Function Make-Wunderlist{
     Param (
@@ -50,32 +47,41 @@ Function Make-Wunderlist{
     Invoke-RestMethod -Uri "https://a.wunderlist.com/api/v1/lists" -Method Post -Headers $headers -Body (ConvertTo-Json $body) -ContentType 'application/json'
 }
 
-#Make-Wunderlist -Title "Testing Again1"
+#Make-Wunderlist -Title "Groceries"
 
-#get specific task
-Function Get-WunderlistTask{
+Function Remove-Wunderlist{
     Param (
-        [string] $ListID,
-        [string] $Completed = 'False'
+        [int[]] $ListD,
+        [string] $Revision
     )
 
-    Invoke-RestMethod -Uri "https://a.wunderlist.com/api/v1/tasks?list_id=$ListID&completed=$Completed" -Method Get -Headers $headers -ContentType 'application/json'
+    Invoke-RestMethod -Uri ("https://a.wunderlist.com/api/v1/lists/$ListID" + "?revision=$Revision") -Method Delete -Headers $headers
 
 }
 
-#Get-WunderlistTask -ListID '251331943'
+#get all tasks in list
+Function Get-AllWunderlistTask{
+    Param (
+        [int] $TaskID,
+        [string] $ShowCompleted = $false
+    )
+
+    Invoke-RestMethod -Uri "https://a.wunderlist.com/api/v1/tasks?list_id=$TaskID&completed=$ShowCompleted" -Method Get -Headers $headers -ContentType 'application/json'
+
+}
+#Get-WunderlistTask -ListID 288253803
+#Get-WunderlistTask -ListID (Find-Wunderlist -Title Groceries).id
 
 #Create a task
 Function Add-WunderlistTask{
 
     Param (
-        [int] $ListID,
+        [int] $TaskID,
         [String] $TaskName
     )
 
-
     $body = @{
-        list_id = $ListID
+        list_id = $TaskID
         title = $TaskName
     }
  
@@ -84,14 +90,36 @@ Function Add-WunderlistTask{
 
 #Add-WunderlistTask -ListID 251331943 -TaskName "Function test"
 
-Function Remove-Wunderlist{
+
+#Updates a task
+Function Update-WunderlistTask {
     Param (
-        [int[]] $ListID,
-        [string] $Revision
+        [Parameter(Mandatory = $true)]$TaskID, 
+        [Parameter(Mandatory = $true)][int] $Revision,
+        [int]$ListID,
+        [string]$Title,
+        [int]$AssigneeID,
+        [bool]$Completed,
+        [string]$RecurrenceType,
+        [int]$RecurrenceCount,
+        [string]$DueDate,
+        [bool]$Starred,
+        [array]$Remove
     )
+    #creats JSON body. Only adds parameters that are used.
+    $body = @{}
+    $body.add("revision",$Revision)
+    if($ListID){$body.add("list_id",$ListID)}
+    if($Title){$body.add("title",$Title)}
+    if($AssigneeID){$body.add("assignee_id",$AssigneeID)}
+    if($Completed){$body.add("completed",$Completed)}
+    if($RecurrenceType){$body.add("recurrence_type",$RecurrenceType)}
+    if($RecurrenceCount){$body.add("recurrence_count",$RecurrenceCount)}
+    if($DueDate){$body.add("due_date",$DueDate)}
+    if($Starred){$body.add("starred",$Starred)}
+    if($Remove){$body.add("remove",$Remove)}
 
-    Invoke-RestMethod -Uri ("https://a.wunderlist.com/api/v1/lists/$ListID" + "?revision=$Revision") -Method Delete -Headers $headers
-
+    Invoke-RestMethod -Uri "a.wunderlist.com/api/v1/tasks/$TaskID" -Method Patch -Headers $headers -Body (ConvertTo-Json $body) -ContentType 'application/json'
 }
 
-#Remove-Wunderlist -ListID 279736834 -Revision 1
+#Update-WunderlistTask -TaskID 2485757789 -Completed:$true -Revision 3
