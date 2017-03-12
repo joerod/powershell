@@ -1,3 +1,5 @@
+
+#spat this
 #This scrip will change the OCS (Outlook Communicator) login to conform with the users AD login. 
 
  
