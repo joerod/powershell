@@ -1,7 +1,6 @@
 #Gets list of machines from specified OU
 Function Get-CompList{
-Get-ADObject -Filter { ObjectClass -eq "computer" } -SearchBase "OU=Resources,DC=NWTraders,DC=LOCAL" `
-| Select-Object -expandproperty Name |Sort
+(Get-ADObject -Filter { ObjectClass -eq "computer" } -SearchBase "OU=Resources,DC=NWTraders,DC=LOCAL").Name |Sort
 }
 
 
@@ -12,7 +11,7 @@ to see if its alive and write error message if machine is unavalible
 Function Get-AdminGroups{
 
 foreach($i in Get-CompList){
- if (-not (Test-Connection -computername $i -count 1 -Quiet -ErrorAction SilentlyContinue)) {
+ if (!(Test-Connection -computername $i -count 1 -Quiet -ErrorAction SilentlyContinue)) {
         write-host $i.toupper() "is Unavalible"  -foreground red
         "`r"
         }
