@@ -5,9 +5,9 @@ More info - https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-Documentat
 #> 
 
 #start session
-Invoke-RestMethod -Uri "http://192.168.1.2:6969/login" -Body "username=admin&password=password" -Method Post -SessionVariable myWebSession
+Invoke-RestMethod -Uri "http://localhost:6969/login" -Body "username=admin&password=password" -Method Post -SessionVariable myWebSession
 #get all torrents running
-$torrents = Invoke-RestMethod  -Uri "http://192.168.1.2:6969/query/torrents" -Method Get -WebSession $myWebSession
+$torrents = Invoke-RestMethod  -Uri "http://localhost:6969/query/torrents" -Method Get -WebSession $myWebSession
 
 #if torrent is completely downloaded delete it
 foreach($torrent in $torrents){
