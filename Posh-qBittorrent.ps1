@@ -12,6 +12,6 @@ $torrents = Invoke-RestMethod  -Uri "http://localhost:6969/query/torrents" -Meth
 #if torrent is completely downloaded delete it
 foreach($torrent in $torrents){
     if($torrent.progress -eq 1){
-      Invoke-RestMethod  -Uri "http://192.168.1.2:6969/command/delete" -Method Post -WebSession $myWebSession -Body "hashes=$($torrent.hash)"
+      Invoke-RestMethod  -Uri "http://localhost:6969/command/delete" -Method Post -WebSession $myWebSession -Body "hashes=$($torrent.hash)"
     }
 }
