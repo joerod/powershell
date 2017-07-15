@@ -2,15 +2,15 @@
 
 Param(
 [Parameter(Position=0,mandatory=$true)]
-[array[]]$Machines
+[array[]]$Machine
 )
 
-foreach($machine in $machines){
+foreach($x in $machine){
 
-Get-WmiObject Win32_OperatingSystem -computer $machine  | select caption | %{
+(Get-WmiObject Win32_OperatingSystem -computer $x).caption | %{
 
 New-Object -TypeName PSCustomObject -Property @{
-    ComputerName = $machine -join ''
+    ComputerName = $x -join ''
     "OS Version" = $_.caption -join ''
    }
     }  
