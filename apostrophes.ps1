@@ -2,6 +2,4 @@
 #in their name
 
 $Name = "Jermaine O'Neal"
-if($Name.contains("'")){
-    ($Name.replace( "'","''"))
-}
+if($Name.contains("'")){($Name.replace( "'","''"))}
