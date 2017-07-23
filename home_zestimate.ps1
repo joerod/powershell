@@ -3,6 +3,7 @@
 #You must register on the Zillow site for a ZWSID for this scirpt to work
 
 Function Find-HousePrice($Address, $CityStateZip){
+    [Reflection.Assembly]::LoadWithPartialName('system.web') | out-null
     $address = [System.Web.HttpUtility]::UrlEncode($address)
     $citystatezip = [System.Web.HttpUtility]::UrlEncode($citystatezip)
 
