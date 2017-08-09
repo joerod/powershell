@@ -13,6 +13,9 @@ This parameter is required and is needed in order to connect to the Pushbullet A
 .PARAMETER Message
 The message you wish to send to the PushBullet device
 
+.PARAMETER Device
+Specifiy which device you'd like to send to by using the device_iden string.  If this isnt specified the push gets sent to all devices.
+
 .PARAMETER Url
 PushBullet API URL.  This parameter is set to https://api.pushbullet.com/v2/pushes
 
@@ -27,19 +30,40 @@ Function Send-PushBulletMessage {
 param(
     [Parameter(Mandatory=$true)]$APIKey,
     [Parameter(Mandatory=$true)]$Message,
+    [Parameter(Mandatory=$false)]$Device,
     [Parameter(Mandatory=$false)]$Url = "https://api.pushbullet.com/v2/pushes"
 )
-
-    $cred = New-Object System.Management.Automation.PSCredential ($api,(ConvertTo-SecureString $api -AsPlainText -Force))
-
-    $body = @{
-                type = "note"
-                title = $Message
-                }
-
-    $result = Invoke-WebRequest -Uri $PushURL -Credential $cred -Method Post -Body $body -ErrorAction SilentlyContinue           
+   $Body =  @{
+     type = "note"
+     title = $Message
+     device_iden = $Device
+    }
+     $result = Invoke-WebRequest -Uri $URL -Method Post -Body $Body -Headers @{"Access-Token" = $APIKey}    
     if($result.StatusCode -eq '200'){
         Write-Output "Message Sucessfully Sent"
     }
-
  }   
+
+ #Send-PushBulletMessage -APIKey "" -Message "test" -Device ""
+
+Function  Get-PushBulletDevices {
+param(
+    [Parameter(Mandatory=$true)]$APIKey,
+    [Parameter(Mandatory=$false)]$Url = "https://api.pushbullet.com/v2/devices"
+)
+
+(Invoke-RestMethod -Uri $URL -Method Get -Headers @{"Access-Token" = $APIKey}).devices  
+ }
+
+ #Get-PushBulletDevices -APIKey ""
+
+Function  Get-WhoAmI {
+param(
+    [Parameter(Mandatory=$true)]$APIKey,
+    [Parameter(Mandatory=$false)]$Url = "https://api.pushbullet.com/v2/users/me"
+)
+
+Invoke-RestMethod -Uri $URL -Method Get -Headers @{"Access-Token" = $APIKey}
+  }
+
+#Get-WhoAmI -APIKey ""
