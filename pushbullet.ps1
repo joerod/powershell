@@ -8,7 +8,7 @@ You must have a Pushbullet API key in order for this function to work.  The link
 https://www.pushbullet.com/#settings/account
 
 .PARAMETER APIKey
-This parameter is required and is needed in order to connect to the Pushbullet API.  
+This parameter is required in order to connect to the Pushbullet API.  
 
 .PARAMETER Message
 The message you wish to send to the PushBullet device
@@ -66,4 +66,8 @@ param(
 Invoke-RestMethod -Uri $URL -Method Get -Headers @{"Access-Token" = $APIKey}
   }
 
+<<<<<<< HEAD
 #Get-WhoAmI -APIKey ""
+=======
+ }   
+>>>>>>> 72d971d9d7e0e5ea182b54c7c56d90194bbdff85
