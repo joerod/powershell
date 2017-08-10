@@ -66,8 +66,5 @@ param(
 Invoke-RestMethod -Uri $URL -Method Get -Headers @{"Access-Token" = $APIKey}
   }
 
-<<<<<<< HEAD
 #Get-WhoAmI -APIKey ""
-=======
- }   
->>>>>>> 72d971d9d7e0e5ea182b54c7c56d90194bbdff85
+
