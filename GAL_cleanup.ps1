@@ -29,7 +29,7 @@ function GAL_Cleanup{
   try{
   if(((get-Mailbox $($user.SamAccountName) -ErrorAction Stop).HiddenFromAddressListsEnabled) -eq $false){
 
-  
+ Write-Verbose "Creating custom object"
 New-Object -TypeName PSCustomObject -Property @{
     SAMAccoutName = $user.samaccountname
     Name = $user.name
@@ -44,7 +44,7 @@ New-Object -TypeName PSCustomObject -Property @{
   }
 
  catch {
- Write-Verbose "There is no mailbox for $($user.DisplayName)" 
+ Write-Error "There is no mailbox for $($user.DisplayName)" 
 
  }
 
