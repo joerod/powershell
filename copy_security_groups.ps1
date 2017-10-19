@@ -6,12 +6,13 @@ Param(
 [string]$DestinationGroup
 )
 
+try{
 $SourceGroupCheck = Get-ADGroup -Identity $SourceGroup 
 $DestinationGroupCheck = Get-ADGroup -filter {sAMAccountName -eq $DestinationGroup}
 
 $Group = Get-ADGroupMember -Identity $SourceGroupCheck.SamAccountName
 
- if($DestinationGroupCheck -ne $null){
+ if($DestinationGroupCheck){
    Write-Output "Copying users from $SourceGroup to $DestinationGroup"
    foreach ($Person in $Group) { 
       Add-ADGroupMember -Identity $DestinationGroupCheck.SamAccountName -Members $Person.distinguishedname 
@@ -29,3 +30,7 @@ $Group = Get-ADGroupMember -Identity $SourceGroupCheck.SamAccountName
       Write-Output "$DestinationGroup group created and users copied"
  }
                          
+}
+catch{
+$error[0]
+}
