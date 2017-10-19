@@ -1,4 +1,10 @@
-get-wmiobject -ComputerName DNSServer -Namespace root\microsoftDNS -Class MicrosoftDNS_ResourceRecord -Filter "domainname='contoso.local'"`
-| select IPAddress, Ownername `
-| ? {$_.ipaddress -like '10.50.*'}  `
-| sort ownername
+param(
+[string]$DNSServer,
+[string]$DomainName,
+[string]$IPAddress
+)
+
+get-wmiobject -ComputerName $DNSServer -Namespace root\microsoftDNS -Class MicrosoftDNS_ResourceRecord -Filter "domainname='$DomainName'"|
+ select IPAddress, Ownername |
+ ? {$_.ipaddress -like '$IPAddress'}  |
+ sort ownername
