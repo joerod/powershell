@@ -17,11 +17,10 @@ Function Remove-qBtorrent {
                 #if torrent is completely downloaded delete it
                 if ($pscmdlet.ShouldProcess($torrent)) {
                     Write-Verbose "Removing $($torrent.name)"
-                    Invoke-RestMethod  -Uri "http://localhost:6969/command/delete" -Method Post -WebSession $myWebSession -Body "hashes=$($torrent.hash)"
+                    Invoke-RestMethod  -Uri "http://localhost:$Port/command/delete" -Method Post -WebSession $myWebSession -Body "hashes=$($torrent.hash)"
                 }
             }
         }
     }
 } 
-
-Remove-qBtorrent -Password "Ftbl4245!!!" -Verbose
+Remove-qBtorrent -Password "foobar" -Verbose
