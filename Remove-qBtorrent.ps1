@@ -2,14 +2,16 @@ Function Remove-qBtorrent {
     #start session
     [CmdletBinding(SupportsShouldProcess = $True)]
     Param ($Password,
-    $Username='admin')
+        $Username = 'admin',
+        $Port = '6969'
+    )
     Begin {
         Write-Verbose "Creating Session"
         #get all torrents running
-        [void](Invoke-RestMethod -Uri "http://localhost:6969/login" -Body "username=$Username&password=$Password" -Method Post -SessionVariable myWebSession) 
+        [void](Invoke-RestMethod -Uri "http://localhost:$Port/login" -Body "username=admin&password=$Password" -Method Post -SessionVariable myWebSession) 
     }
     Process {
-        foreach ($torrent in (Invoke-RestMethod  -Uri "http://localhost:6969/query/torrents" -Method Get -WebSession $myWebSession)) {
+        foreach ($torrent in (Invoke-RestMethod  -Uri "http://localhost:$Port/query/torrents" -Method Get -WebSession $myWebSession)) {
             Write-Verbose ("Checking: {0} - {1}" -f $($torrent.name), $($torrent.progress).tostring("P"))
             if ($torrent.progress -eq 1) {
                 #if torrent is completely downloaded delete it
@@ -22,4 +24,4 @@ Function Remove-qBtorrent {
     }
 } 
 
-Remove-qBtorrent -Password "foobar" -Verbose
+Remove-qBtorrent -Password "Ftbl4245!!!" -Verbose
