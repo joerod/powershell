@@ -1,17 +1,18 @@
 Function Set-RedditWallPaper {
+    [CmdletBinding()]
     Param
     (
-        [parameter(Mandatory=$true,
-        ValueFromPipeline=$true)]
+        [parameter(Mandatory,
+        ValueFromPipeline, Position = 0)]
         [String[]]
         $Subreddit,
-        [parameter(ValueFromPipeline=$true)]
+        [parameter(ValueFromPipeline, Position = 1)]
         [String]
         $ImageLocation = [environment]::getfolderpath("mypictures"),
-        [parameter(ValueFromPipeline=$true)]
+        [parameter(ValueFromPipeline, Position = 2)]
         [String]
         $ImageName = 'picture_of_the_day.jpg',
-        [parameter(Mandatory=$true)]
+        [parameter(Mandatory, Position = 3)]
         [String]
         $TokenLocation 
     )
@@ -36,7 +37,7 @@ SystemParametersInfo( SetDesktopWallpaper, 0, path, UpdateIniFile | SendWinIniCh
     [wallpaper]::SetWallpaper($Value) 
     }
     #ensure PSRAW module is installed
-    if(!(Get-Module PSRAW)){
+    if(-not (Get-Module PSRAW)){
         Install-Module PSRAW
     }
     else {
@@ -51,12 +52,13 @@ SystemParametersInfo( SetDesktopWallpaper, 0, path, UpdateIniFile | SendWinIniCh
         #pulls the image data
         Write-Verbose "Finding jpg images"
         [string]$picurl = $result.url | Select-String -Pattern "jpg"
+        $output = (Join-Path -Path $ImageLocation -ChildPath $ImageName )
         #saves image locally
-        Invoke-RestMethod -uri $picurl.Trim() -OutFile (Join-Path $ImageLocation $ImageName )
+        Invoke-RestMethod -uri $picurl.Trim() -OutFile $output
         Write-Verbose "Changing desktop image to: $($result.title)"
         #sets wallpaper
-        Set-WallPaper -value (Join-Path $ImageLocation $ImageName )
+        Set-WallPaper -value $output
     }
 }
 
-#Set-RedditWallPaper -Subreddit "https://oauth.reddit.com/r/EarthPorn/top"  -TokenLocation "C:\Users\joerod\Documents\psrawtoken.xml" -Verbose
+#Set-RedditWallPaper -Subreddit "https://oauth.reddit.com/r/EarthPorn/top"  -TokenLocation "C:\Users\joerod\Documents\psrawtoken.xml" -ImageLocation "C:\Users\joerod\Pictures" -Verbose
