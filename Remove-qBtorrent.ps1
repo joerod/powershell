@@ -15,7 +15,7 @@ Function Remove-qBtorrent {
             Write-Verbose ("Checking: {0} - {1}" -f $($torrent.name), $($torrent.progress).tostring("P"))
             if ($torrent.progress -eq 1) {
                 #if torrent is completely downloaded delete it
-                if ($pscmdlet.ShouldProcess($torrent)) {
+                if ($PSCmdlet.ShouldProcess("Remove $($torrent.name)")) {
                     Write-Verbose "Removing $($torrent.name)"
                     Invoke-RestMethod  -Uri "http://localhost:$Port/command/delete" -Method Post -WebSession $myWebSession -Body "hashes=$($torrent.hash)"
                 }
