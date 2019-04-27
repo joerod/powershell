@@ -4,7 +4,6 @@ Function Remove-ItemByDate {
 Removes a file or folder older than a specified date
 
 .DESCRIPTION
-Adds a file name extension to a supplied name.
 Takes any strings for the file name or extension.
 
 .PARAMETER Item
@@ -24,7 +23,7 @@ Remove-ItemByDate -Item D:\JoeRod\joerod\Desktop\movies -Date (Get-Date).AddMont
   )
 
   $args = @{
-    Recurse = $True
+    Recurse = $true
   }
 
   if((Get-item $item).psiscontainer) {
