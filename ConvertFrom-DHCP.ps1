@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS  
-    Converts a windoes DHCP address to static
+    Converts a Windows DHCP address to static 
 .DESCRIPTION  
     Using only PowerShell convert a number to CIDR notation
 .EXAMPLE  
@@ -23,7 +23,7 @@ Function ConvertFrom-DHCP {
     interfacealias = $interfacealias
     ipaddress      = $interface.ipv4address.ipv4address
     defaultgateway = $interface.ipv4defaultgateway.nexthop
-    PrefixLength   = $(((Get-NetIPAddress -InterfaceAlias $interface.InterfaceAlias).where{$_.AddressFamily -eq 'IPv4'}).PrefixLength)
+    PrefixLength   = $((Get-NetIPAddress -InterfaceAlias $interface.InterfaceAlias -AddressFamily IPv4).PrefixLength)
   }
 
   if ($PSCmdlet.ShouldProcess(($new_ip_splat.GetEnumerator() | ForEach-Object {"{0}`t{1}" -f $_.Name,($_.Value -join ", ")}))) {
