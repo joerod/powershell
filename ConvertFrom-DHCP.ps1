@@ -27,7 +27,7 @@ Function ConvertFrom-DHCP {
   }
 
   if ($PSCmdlet.ShouldProcess(($new_ip_splat.GetEnumerator() | ForEach-Object {"{0}`t{1}" -f $_.Name,($_.Value -join ", ")}))) {
-    Remove-NetIPAddress -InterfaceAlias $interfacealias -AddressFamily ipv4 | Out-Null
+    Remove-NetIPAddress -InterfaceAlias $interfacealias -AddressFamily ipv4
     New-NetIPAddress @new_ip_splat
     Set-DnsClientServerAddress -InterfaceAlias $interfacealias -ServerAddresses $dns
   }
