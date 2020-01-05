@@ -1,6 +1,6 @@
 <# powershell leacher for qbtorrent.
    removes torrents that are 100%
-   stops running when all torents are complete
+   stops running when all torrents are complete
 #>
 
 Function Remove-qBtorrent {
