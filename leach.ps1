@@ -1,8 +1,3 @@
-<# powershell leacher for qbtorrent.
-   removes torrents that are 100%
-   stops running when all torrents are complete
-#>
-
 Function Remove-qBtorrent {
     #start session
     [CmdletBinding(SupportsShouldProcess = $True)]
@@ -26,7 +21,7 @@ Function Remove-qBtorrent {
                 #if torrent is completely downloaded delete it
                 if ($PSCmdlet.ShouldProcess("Remove $($torrent.name)")) {
                     Write-Verbose "$($torrent.name)"
-                    Invoke-RestMethod  -Uri "http://$($computer):$($Port)/api/v2/torrents/delete?hashes=$($torrent.hash)&deleteFiles=false" -Method Post -WebSession $myWebSession -Verbose:$false
+                    Invoke-RestMethod  -Uri "http://$($computer):$($Port)/api/v2/torrents/delete?hashes=$($torrent.hash)&deleteFiles=false" -Method Get -WebSession $myWebSession -Verbose:$false
 
                 }
             }
@@ -36,7 +31,7 @@ Function Remove-qBtorrent {
 
 $Password = ""
 $Username = 'admin'
-$Port = ''
+$Port = '6969'
 $Computer = ''
 [int]$minutes = '1'
 
