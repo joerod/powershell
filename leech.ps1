@@ -1,48 +1,68 @@
+Function Connect-qBtorrent {
+  [CmdletBinding()]
+  #[OutputType([Microsoft.PowerShell.Commands.WebRequestSession])]
+  Param (
+    $Username,
+    $Password,
+    $Computer,
+    $Port
+  )
+  Invoke-RestMethod -Uri "http://$($computer):$($Port)/api/v2/auth/login" -Body "username=$Username&password=$Password" -Method Post -SessionVariable webSession
+  $Global:Session = $websession
+}
 Function Remove-qBtorrent {
-    #start session
-    [CmdletBinding(SupportsShouldProcess = $True)]
-    Param (
-        $Password,
-        $Username,
-        $Port,
-        $Computer
-    )
-    Begin {
-        Write-Verbose "Creating Session"
-        #get all torrents running
-        Invoke-RestMethod -Uri "http://$($computer):$($Port)/api/v2/auth/login" -Body "username=$Username&password=$Password" -Method Post -SessionVariable myWebSession -Verbose:$false
-    }
-    Process {
-        foreach ($torrent in (Invoke-RestMethod -Uri "http://$($computer):$($Port)/api/v2/torrents/info?filter=downloading" -Method Get -WebSession $myWebSession -Verbose:$false)) {
-          if ($torrent.progress -ne 1) {
-          Write-Verbose ("Checking: {0} - {1}" -f $($torrent.name), $($torrent.progress).tostring("P"))
-          }
-          else {
-                #if torrent is completely downloaded delete it
-                if ($PSCmdlet.ShouldProcess("Remove $($torrent.name)")) {
-                    Write-Verbose "$($torrent.name)"
-                    Invoke-RestMethod  -Uri "http://$($computer):$($Port)/api/v2/torrents/delete?hashes=$($torrent.hash)&deleteFiles=false" -Method Get -WebSession $myWebSession -Verbose:$false
-
-                }
-            }
-        }
-    }
+  #start session
+  [CmdletBinding(SupportsShouldProcess = $True)]
+  Param (
+    $Hash,
+    $DeleteFiles = 'false',
+    $Computer,
+    $Port,
+    $WebSession
+  )
+  #if torrent is completely downloaded delete it
+  if ($PSCmdlet.ShouldProcess("Removing $Hash")) {
+    Invoke-RestMethod  -Uri "http://$($computer):$($Port)/api/v2/torrents/delete?hashes=$($Hash)&deleteFiles=$($DeleteFiles)" -Method Get -webSession $webSession
+  }
+}
+Function Get-qBtorrentInfo {
+  #start session
+  [CmdletBinding()]
+  Param (
+    $Filter,
+    $WebSession,
+    $Computer,
+    $Port
+  )
+  $uri = "http://$($computer):$($Port)/api/v2/torrents/info"
+  if ($Filter) {
+    $uri = $uri + "?filter=$($Filter)"
+  }
+  Invoke-RestMethod -Uri $uri -Method Get -webSession  $webSession
 }
 
 $Password = ""
 $Username = 'admin'
-$Port = '6969'
-$Computer = ''
+$Port = ""
+$Computer = ""
 [int]$minutes = '1'
 
-Invoke-RestMethod -Uri "http://$($computer):$($Port)/api/v2/auth/login" -Body "username=$Username&password=$Password" -Method Post -SessionVariable myWebSession -Verbose:$false | Out-Null
-while($(($results = Invoke-RestMethod -Uri "http://$($computer):$($Port)/api/v2/torrents/info?filter=downloading" -Method Get -WebSession $myWebSession -Verbose:$false).Count) -ne 0){
-  $remove_result = Remove-qBtorrent -Password $Password -Computer $computer -username $username -port $port
-  foreach($result in $results){
-    if($results.Count -eq 1 -and $null -ne $remove_result){
-      Write-Warning ("Still leeching: {0} - {1}%" -f $($result.name), [math]::Round($($($result.progress) * 100),2))
+Connect-qBtorrent -Username $Username -Password $Password -Computer $Computer -Port $Port
+while ($results = Get-qBtorrentInfo -WebSession $session -Computer $Computer -Port $port) {
+  foreach ($result in $results) {
+    switch ($result.state) {
+      'downloading' {
+        Write-Warning ("Still leeching: {0} - {1}%" -f $($result.name), [math]::Round($($($result.progress) * 100), 2))
+      }
+      'uploading' {
+        Write-output "Removing $($result.name)"
+        Remove-qBtorrent -WebSession $session -Hash $result.hash -Computer $Computer -Port $port
+      }
+    }
+    if ((Get-qBtorrentInfo -WebSession $session -Computer $Computer -Port $port).Count -eq 0) {
+      Write-output "You're all leeched up... Ending"
+      return
     }
   }
-  if($results.Count -gt 0){Start-Sleep ($minutes * 60)
-  }
+  Start-Sleep ($minutes * 60)
 }
