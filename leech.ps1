@@ -41,8 +41,8 @@ Function Get-qBtorrentInfo {
   Invoke-RestMethod -Uri $uri -Method Get -webSession  $webSession
 }
 
-$Password = ""
-$token = ""
+$Password = "" # API password for qbittorrent
+$token = "" # Token for Plex API
 $Username = 'admin'
 $Port = '6969'
 $plex,$Computer = '192.168.1.231'
