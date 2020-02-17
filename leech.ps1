@@ -42,21 +42,32 @@ Function Get-qBtorrentInfo {
 }
 
 $Password = ""
+$token = ""
 $Username = 'admin'
-$Port = ""
-$Computer = ""
+$Port = '6969'
+$Computer = '192.168.1.231'
 [int]$minutes = '1'
 
 Connect-qBtorrent -Username $Username -Password $Password -Computer $Computer -Port $Port
 while ($results = Get-qBtorrentInfo -WebSession $session -Computer $Computer -Port $port) {
   foreach ($result in $results) {
     switch ($result.state) {
-      'downloading' {
-        Write-Warning ("Still leeching: {0} - {1}%" -f $($result.name), [math]::Round($($($result.progress) * 100), 2))
-      }
       'uploading' {
         Write-output "Removing $($result.name)"
         Remove-qBtorrent -WebSession $session -Hash $result.hash -Computer $Computer -Port $port
+        # refresh plex if a movie is downloaded
+        $return = Invoke-restmethod -uri "http://127.0.0.1:32400/library/sections?X-Plex-Token=$($token)"
+        foreach ($path in ($results.save_path | Select-Object -Unique)) {
+          if($id = $return.MediaContainer.Directory.Location | Where-Object { ($_.path + "\") -eq $path}){
+            Invoke-restmethod -uri "http://127.0.0.1:32400/library/sections/$($id.id)/refresh?X-Plex-Token=$($token)"
+          }
+          else{
+            Write-warning ("Could not find folder {0} to refresh in Plex" -f $id.path)
+          }
+        }
+      }
+      'default' {
+        Write-Warning ("Still leeching: {0} - {1}%" -f $($result.name), [math]::Round($($($result.progress) * 100), 2))
       }
     }
     if ((Get-qBtorrentInfo -WebSession $session -Computer $Computer -Port $port).Count -eq 0) {
