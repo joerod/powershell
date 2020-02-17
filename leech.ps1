@@ -43,10 +43,10 @@ Function Get-qBtorrentInfo {
 
 $Password = "" # API password for qbittorrent
 $token = "" # Token for Plex API
-$Username = 'admin'
-$Port = '6969'
-$plex,$Computer = '192.168.1.231'
-[int]$minutes = '1'
+$Username = 'admin' # password for qbittorrent
+$Port = '6969' # port for qbittorrent
+$plex,$Computer = '192.168.1.231' # address of plex server and where qbittorrent is running
+[int]$minutes = '1' # how often to check on downloading file(s)
 
 Connect-qBtorrent -Username $Username -Password $Password -Computer $Computer -Port $Port
 while ($results = Get-qBtorrentInfo -WebSession $session -Computer $Computer -Port $port) {
