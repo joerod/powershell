@@ -77,4 +77,4 @@ while ($results = Get-qBtorrentInfo -WebSession $session -Computer $Computer -Po
   }
   Start-Sleep ($minutes * 60)
 }
-Invoke-restmethod -uri "http://$($plex):32400/library/sections/4/refresh??force=1&X-Plex-Token=$($token)"
+
