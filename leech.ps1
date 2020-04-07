@@ -1,12 +1,32 @@
 #Requires –Version 7
+<#PSScriptInfo
+
+.VERSION 1.0
+
+.AUTHOR joerod@gmail.com
+
+.TAGS qbittorrent
+
+.RELEASENOTES
+$computer = '192.168.1.4'
+.\leech.ps1 -Username "admin" -Password "password" -Token "7YBGs5ZtfV2bPW6ANFea" -Computer $computer -Plex $computer
+#>
+
+<#
+.DESCRIPTION
+if you're the kinda person who likes to leech torrents this ones for you.
+#>
+
 param(
-  $Password,  # API password for qbittorrent
+  $Password, # API password for qbittorrent
   $token, # Token for plex API
   $Username = 'admin', # password for qbittorrent
   $Port = '6969', # port for qbittorrent
-  $plex = $Computer, # address of plex server and where qbittorrent is running
+  $Computer, # where qbittorrent is running
+  $Plex, # address of plex server
   [int]$minutes = '1' # how often to check on downloading file(s)
 )
+
 Function Connect-qBtorrent {
   [CmdletBinding()]
   #[OutputType([Microsoft.PowerShell.Commands.WebRequestSession])]
@@ -54,16 +74,16 @@ Connect-qBtorrent -Username $Username -Password $Password -Computer $Computer -P
 while ($results = Get-qBtorrentInfo -WebSession $session -Computer $Computer -Port $port) {
   foreach ($result in $results) {
     switch ($result.state) {
-      {$_ -in 'uploading','stalledUP'} {
+      { $_ -in 'uploading', 'stalledUP' } {
         Write-output "Removing $($result.name)"
         Remove-qBtorrent -WebSession $session -Hash $result.hash -Computer $Computer -Port $port
         # refresh plex if a movie is downloaded
         $return = Invoke-restmethod -uri "http://$($plex):32400/library/sections?X-Plex-Token=$($token)"
         foreach ($path in ($results.save_path | Select-Object -Unique)) {
-          if($id = $return.MediaContainer.Directory.Location | Where-Object { ($_.path + "\") -eq $path}){
+          if ($id = $return.MediaContainer.Directory.Location | Where-Object { ($_.path + "\") -eq $path }) {
             Invoke-restmethod -uri "http://$($plex):32400/library/sections/$($id.id)/refresh??force=1&X-Plex-Token=$($token)"
           }
-          else{
+          else {
             Write-warning ("Could not find folder {0} to refresh in Plex" -f ($($id.path) ? $($id.path) : "Null"))
           }
         }
