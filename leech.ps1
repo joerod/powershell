@@ -1,3 +1,12 @@
+#Requires –Version 7
+param(
+  $Password,  # API password for qbittorrent
+  $token, # Token for plex API
+  $Username = 'admin', # password for qbittorrent
+  $Port = '6969', # port for qbittorrent
+  $plex = $Computer, # address of plex server and where qbittorrent is running
+  [int]$minutes = '1' # how often to check on downloading file(s)
+)
 Function Connect-qBtorrent {
   [CmdletBinding()]
   #[OutputType([Microsoft.PowerShell.Commands.WebRequestSession])]
@@ -41,13 +50,6 @@ Function Get-qBtorrentInfo {
   Invoke-RestMethod -Uri $uri -Method Get -webSession  $webSession
 }
 
-$Password = "" # API password for qbittorrent
-$token = "" # Token for plex API
-$Username = 'admin' # password for qbittorrent
-$Port = '6969' # port for qbittorrent
-$plex = $Computer = '192.168.1.231' # address of plex server and where qbittorrent is running
-[int]$minutes = '1' # how often to check on downloading file(s)
-
 Connect-qBtorrent -Username $Username -Password $Password -Computer $Computer -Port $Port
 while ($results = Get-qBtorrentInfo -WebSession $session -Computer $Computer -Port $port) {
   foreach ($result in $results) {
@@ -77,4 +79,3 @@ while ($results = Get-qBtorrentInfo -WebSession $session -Computer $Computer -Po
   }
   Start-Sleep ($minutes * 60)
 }
-
