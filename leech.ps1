@@ -18,11 +18,11 @@ if you're the kinda person who likes to leech torrents this ones for you.
 #>
 
 param(
-  $Password, # API password for qbittorrent
-  $token, # Token for plex API
   $Username = 'admin', # password for qbittorrent
-  $Port = '6969', # port for qbittorrent
+  $Password, # API password for qbittorrent
+  $Token, # Token for plex API
   $Computer, # where qbittorrent is running
+  $Port = '6969', # port for qbittorrent
   $Plex, # address of plex server
   [int]$minutes = '1' # how often to check on downloading file(s)
 )
@@ -78,13 +78,15 @@ while ($results = Get-qBtorrentInfo -WebSession $session -Computer $Computer -Po
         Write-output "Removing $($result.name)"
         Remove-qBtorrent -WebSession $session -Hash $result.hash -Computer $Computer -Port $port
         # refresh plex if a movie is downloaded
-        $return = Invoke-restmethod -uri "http://$($plex):32400/library/sections?X-Plex-Token=$($token)"
-        foreach ($path in ($results.save_path | Select-Object -Unique)) {
-          if ($id = $return.MediaContainer.Directory.Location | Where-Object { ($_.path + "\") -eq $path }) {
-            Invoke-restmethod -uri "http://$($plex):32400/library/sections/$($id.id)/refresh??force=1&X-Plex-Token=$($token)"
-          }
-          else {
-            Write-warning ("Could not find folder {0} to refresh in Plex" -f ($($id.path) ? $($id.path) : "Null"))
+        if ($Plex) {
+          $return = Invoke-restmethod -uri "http://$($Plex):32400/library/sections?X-Plex-Token=$($token)"
+          foreach ($path in ($results.save_path | Select-Object -Unique)) {
+            if ($id = $return.MediaContainer.Directory.Location | Where-Object { ($_.path + "\") -eq $path }) {
+              Invoke-restmethod -uri "http://$($Plex):32400/library/sections/$($id.id)/refresh??force=1&X-Plex-Token=$($token)"
+            }
+            else {
+              Write-warning ("Could not find folder {0} to refresh in Plex" -f ($($id.path) ? $($id.path) : "Null"))
+            }
           }
         }
       }
