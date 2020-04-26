@@ -6,17 +6,14 @@
      remove_dns.ps1
 #>
 
-
 foreach ($domainname in (Get-DnsServerZone -ComputerName crpnycdcrt01 | ? { ($_.IsReverseLookupzone -like "false") -and ($_.ZoneType -like "Primary") } | Select-Object -ExpandProperty ZoneName)) {
   function list {
 
     get-wmiobject -ComputerName dnsserver -Namespace root\microsoftDNS -Class MicrosoftDNS_ResourceRecord -Filter "domainname='$domainname'" |
     Select-Object IPAddress, ownername |
-    Where-Object { ($_.IPAddress -like '10.7.*') -or ($_.IPAddress -like '10.9.*') -and ($_.IPAddress -notlike $null) } |
-    Sort-Object IPAddress #|
-    #export-csv C:\Users\jorodriguez\Desktop\$domainname.csv  -NoTypeInformation
+    Where-Object { ($_.IPAddress -match '10.7') -or ($_.IPAddress -match '10.9') -and ($_.IPAddress -notlike $null) } |
+    Sort-Object IPAddress 
   }
-
 
   ForEach ($ip in list) {
     $ipnew = $ip.ownername -replace "\..+"
