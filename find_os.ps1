@@ -1,6 +1,7 @@
-#Requires -Version 5.1
+
 #this script takes a list of computers either IP or Name and shows what OS they are running. 
 function Find-OS {
+#Requires -Version 5.1
   Param(
     [array[]]$ComputerName = $env:COMPUTERNAME
   )
