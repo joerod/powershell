@@ -22,9 +22,6 @@ Remove-ItemByDate -Item D:\JoeRod\joerod\Desktop\movies -Date (Get-Date).AddMont
   [datetime]$Date
   )
 
-  $args = @{
-    Recurse = $true
-  }
 
   if((Get-item $item).psiscontainer) {
     $args.Recurse = $true
