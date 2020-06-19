@@ -1,4 +1,4 @@
-#Requires -Version 5.1.18362.752
+#Requires -Version 5.1
 #this script takes a list of computers either IP or Name and shows what OS they are running. 
 function Find-OS {
   Param(
