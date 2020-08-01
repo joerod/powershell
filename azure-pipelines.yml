@@ -10,10 +10,10 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    Get-Date
-    "I like turtles"
-  displayName: 'Run a multi-line script'
+- pwsh:  Get-Date
+  #workingDirectory:  #
+  displayName:  "Test"
+  #failOnStderr:  #
+  #errorActionPreference:  #
+  #ignoreLASTEXITCODE:  #
+  #env:  # mapping of environment variables to add
