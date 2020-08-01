@@ -10,7 +10,9 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- pwsh:  get-childitem 
+- pwsh:  |
+    get-childitem
+    git branch -a
   #workingDirectory:  #
   displayName:  "Test"
   #failOnStderr:  #
