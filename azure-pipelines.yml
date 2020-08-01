@@ -10,7 +10,7 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- pwsh:  Get-Date
+- pwsh:  get-childitem 
   #workingDirectory:  #
   displayName:  "Test"
   #failOnStderr:  #
