@@ -11,7 +11,7 @@ pool:
 
 steps:
 - pwsh:  |
-    get-childitem
+    git version
     git branch -a
   #workingDirectory:  #
   displayName:  "Test"
