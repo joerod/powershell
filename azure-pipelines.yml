@@ -11,11 +11,11 @@ pool:
 
 steps:
 - pwsh:  |
-    git version
-    git branch -a
+    Get-Date
   #workingDirectory:  #
   displayName:  "Test"
-  #failOnStderr:  #
-  #errorActionPreference:  #
-  #ignoreLASTEXITCODE:  #
   #env:  # mapping of environment variables to add
+- task: PowerShell Script Analyzer@1
+  inputs:
+    PsFolder: '$(currentDirectory)'
+    FailOnError: true
