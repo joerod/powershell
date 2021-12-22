@@ -13,7 +13,7 @@ Param(
 [string]$user
 )
 
-function get-groupmember{
+function get-groupmember($user){
 #gets groups that are not distribution groups
 $Groups = Get-ADUser -Identity $user -Properties * |select -expand memberof
 
