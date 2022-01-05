@@ -9,57 +9,51 @@
 #>
 
 Param(
-[Parameter(Position=0,mandatory=$true)]
-[string]$user
+    [Parameter(mandatory)]
+    [string]$User
 )
 
-function get-groupmember($user){
-#gets groups that are not distribution groups
-$Groups = Get-ADUser -Identity $user -Properties * |select -expand memberof
-
-foreach($group in $groups){
-$group = Get-Group $group
-
-if ($group.GroupType -like "*SecurityEnabled*"){
-Write-Output $group
-  }
- }
+function Get-GroupMember($User) {
+    #gets groups that are not distribution groups
+    foreach ($group in ((Get-ADUser -Identity $user -Properties memberof).memberof)) {
+        $group = Get-Group $group
+        if ($group.GroupType -like "*SecurityEnabled*") {
+            Write-Output $group
+        }
+    }
 }
 
-function create-newuser{
-#creates new user 
-$newuser = ($user.substring(0,4) + "admin" ) 
-$oldaccount = Get-ADUser -Identity $user -Properties *
-#Write-Output "User account created... $newuser"
+function Set-NewUser($User) {
+    #creates new user 
+    $newuser = ($user.substring(0, 4) + "admin" ) 
+    $oldaccount = Get-ADUser -Identity $user -Properties *
+    #Write-Output "User account created... $newuser"
 
-#parses out OU path to set to new users OU
-$LikeUN = $oldaccount.DistinguishedName | Out-String
-$OU = $LikeUN.Substring($LikeUN.IndexOf("OU="))
-#Write-Output "User will be located in $OU"
+    #parses out OU path to set to new users OU
+    $LikeUN = $oldaccount.DistinguishedName | Out-String
+    $OU = $LikeUN.Substring($LikeUN.IndexOf("OU="))
+    #Write-Output "User will be located in $OU"
 
-#sets password
-$password = "Welcome1" |ConvertTo-SecureString -AsPlainText -Force
-New-ADUser -Name ($($oldaccount).displayname + " (Admin)") -SamAccountName $newuser -AccountPassword $password -UserPrincipalName ($newuser + "@CONTOSO.LOCAL") -GivenName $($oldaccount).givenname -Surname $($oldaccount).Surname `
- -DisplayName ($($oldaccount).displayname + " (Admin)")  -Path $OU -ChangePasswordAtLogon $true -Enabled $true
-$newuser
+    #sets password
+    $password = "Strong Password" | ConvertTo-SecureString -AsPlainText -Force
+    New-ADUser -Name ($($oldaccount).displayname + " (Admin)") -SamAccountName $newuser -AccountPassword $password -UserPrincipalName ($newuser + "@CONTOSO.LOCAL") -GivenName $($oldaccount).givenname -Surname $($oldaccount).Surname `
+        -DisplayName ($($oldaccount).displayname + " (Admin)")  -Path $OU -ChangePasswordAtLogon $true -Enabled $true
+    $newuser
 
-#sets email address for new account
-Set-ADUser -Identity $newuser -add @{mail = (get-aduser -Identity $user -Properties mail).mail}
-Set-ADUser -Identity $newuser -EmailAddress (get-aduser -Identity $user -Properties mail).mail
-
+    #sets email address for new admin account to admins primary account 
+    Set-ADUser -Identity $newuser -add @{mail = (Get-ADUser -Identity $user -Properties mail).mail }
+    Set-ADUser -Identity $newuser -EmailAddress (Get-ADUser -Identity $user -Properties mail).mail
 }
 
-$groupmember = get-groupmember
-
-function Add-Groups{
-foreach($addgroup in $groupmember.samaccountname){
-write-output "added to $addgroup"
-Add-ADGroupMember $addgroup -Members $brandnewuser
- }
+function Add-Groups {
+    foreach ($addgroup in $groupmember.samaccountname) {
+        Write-Output "added to $addgroup"
+        Add-ADGroupMember $addgroup -Members $brandnewuser
+    }
 }
 
-$brandnewuser = create-newuser
+Get-GroupMember
+Set-Newuser
+Start-Sleep -Sleep 5
 Write-Output "Waiting for AD to catch up with the script"
-Start-Sleep -s 5
-add-groups
-
+Add-Groups 
