@@ -16,7 +16,7 @@ Param(
 function Get-GroupMember($User) {
     #gets groups that are not distribution groups
     foreach ($group in ((Get-ADUser -Identity $user -Properties memberof).memberof)) {
-        $group = Get-Group $group
+        $group = Get-Group $group # missing
         if ($group.GroupType -like "*SecurityEnabled*") {
             Write-Output $group
         }
